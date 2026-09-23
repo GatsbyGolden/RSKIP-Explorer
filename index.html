@@ -129,14 +129,84 @@
   .legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font: 13px var(--tag); text-transform: uppercase; letter-spacing: .03em; }
   footer p { margin: 0; max-width: 72ch; }
 
+  [hidden] { display: none !important; }
+  .tabs { display: flex; gap: 6px; margin: 28px 0 0; border-bottom: 1.5px solid var(--line-strong); flex-wrap: wrap; }
+  .tab { background: transparent; border: 0; border-radius: 10px 10px 0 0; padding: 10px 16px; font: 14px var(--tag); text-transform: uppercase; letter-spacing: .04em; color: var(--muted); cursor: pointer; }
+  .tab:hover { color: var(--text); }
+  .tab[aria-selected="true"] { background: var(--mark-bg); color: var(--mark-text); }
+
+  .guide { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 48px; margin-top: 32px; }
+  .toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 20px); align-self: start; display: grid; gap: 2px; }
+  .toc-h { font: 13px var(--tag); text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-bottom: 8px; }
+  .toc button { text-align: left; background: none; border: 0; border-left: 2px solid var(--line); padding: 5px 0 5px 12px; font: 14px var(--body); color: var(--muted); cursor: pointer; }
+  .toc button:hover, .toc button.on { color: var(--text); border-left-color: var(--orange); }
+  .guide-body { max-width: 760px; display: grid; gap: 44px; }
+  .guide > *, .guide-body > section { min-width: 0; }
+  .guide-body > section { scroll-margin-top: 24px; }
+  .guide-lede { font-size: 18px; margin: 0; }
+  .guide h2 { font: 400 30px/1.1 var(--display); margin: 0 0 14px; letter-spacing: -.01em; }
+  .guide h3 { font: 400 19px/1.2 var(--display); margin: 22px 0 10px; }
+  .guide p { margin: 0 0 12px; max-width: 70ch; }
+  .guide .note { color: var(--muted); font-size: 14px; }
+  .guide code { font: 14px ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--surface); padding: 1px 5px; border-radius: 4px; }
+
+  .diagram { background: var(--surface); border-radius: 14px; padding: 18px; margin: 16px 0 6px; overflow-x: auto; }
+  .diagram svg { display: block; width: 100%; min-width: 620px; height: auto; }
+  .d-edges path { fill: none; stroke: var(--text); stroke-width: 2; }
+  .d-edges path.dash { stroke-dasharray: 6 5; }
+  .d-head { fill: var(--text); }
+  .n rect { fill: var(--bg); stroke: var(--line-strong); stroke-width: 1.5; }
+  .n text { fill: var(--text); font: 15px var(--tag); text-transform: uppercase; letter-spacing: .03em; text-anchor: middle; }
+  .n.draft rect { fill: var(--t-draft); stroke: var(--t-draft); }
+  .n.accepted rect { fill: var(--t-accepted); stroke: var(--t-accepted); }
+  .n.adopted rect { fill: var(--t-adopted); stroke: var(--t-adopted); }
+  .n.draft text, .n.accepted text, .n.adopted text { fill: var(--on-accent); }
+  .n.end rect { stroke-dasharray: 4 4; }
+
+  .defs { margin: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+  .defs > div { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .defs.wide > div { grid-template-columns: 190px minmax(0, 1fr); }
+  .defs dt { font: 16px/1.4 var(--display); }
+  .defs dd { margin: 0; }
+  .steps { margin: 0 0 16px; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 14px; }
+  .steps li { counter-increment: s; position: relative; padding-left: 46px; min-height: 30px; }
+  .steps li::before { content: counter(s); position: absolute; left: 0; top: -3px; width: 30px; height: 30px; border-radius: 50%; background: var(--mark-bg); color: var(--mark-text); font: 14px/30px var(--tag); text-align: center; }
+  .steps strong { font-family: var(--display); font-weight: 400; }
+  .label-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .label-grid > div { background: var(--surface); border-radius: 14px; padding: 16px 18px; }
+  .label-grid h3 { margin-top: 0; }
+  .label-grid p { font-size: 14px; color: var(--muted); }
+  .kv { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: 15px; }
+  .kv li { display: flex; align-items: center; gap: 10px; }
+  .kv .tag { margin: 0; min-width: 52px; text-align: center; }
+  .table-wrap { overflow-x: auto; margin: 4px 0 12px; }
+  table.fields { border-top: 1px solid var(--line); }
+  table.fields th { text-align: left; font: 16px var(--display); padding: 10px 16px 10px 0; border-bottom: 1px solid var(--line); white-space: nowrap; vertical-align: top; }
+  table.fields td { padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+  .editors { list-style: none; margin: 0 0 16px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .editors a { display: inline-block; border: 1.5px solid var(--line); border-radius: 999px; padding: 6px 14px; text-decoration: none; font-size: 15px; }
+  .editors a:hover { border-color: var(--orange); color: var(--text); }
+
+  @media (max-width: 900px) {
+    .guide { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    .toc { position: static; grid-auto-flow: column; grid-auto-columns: max-content; overflow-x: auto; gap: 6px; padding-bottom: 4px; }
+    .toc-h { display: none; }
+    .toc button { border: 1.5px solid var(--line); border-radius: 999px; padding: 5px 12px; font-size: 13px; }
+    .label-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .defs > div, .defs.wide > div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+    .guide h2 { font-size: 26px; }
+  }
+
   @media (max-width: 760px) {
     .wrap { padding: 20px 16px 48px; }
     .topbar { margin-bottom: 26px; }
     .stats { grid-template-columns: repeat(2, 1fr); }
-    thead { display: none; }
-    table, tbody, tr, td { display: block; width: 100%; }
+    .list thead { display: none; }
+    table.list, .list tbody, .list tr, .list td { display: block; width: 100%; }
     tbody tr.row { padding: 12px 0; display: grid; grid-template-columns: auto 1fr auto; gap: 6px 10px; align-items: center; }
-    tbody td { padding: 0; }
+    .list tbody td { padding: 0; }
     td.num { grid-row: 1; grid-column: 1; }
     td.date { grid-row: 1; grid-column: 2; }
     td.status { grid-row: 1; grid-column: 3; }
@@ -160,6 +230,13 @@
     <div class="source"><span class="dot loading" id="dot"></span><span id="sourceText">Loading proposals…</span></div>
   </header>
 
+  <div class="tabs" role="tablist" aria-label="Views">
+    <button class="tab" role="tab" id="tabBtn-proposals" aria-controls="tab-proposals" aria-selected="true" data-tab="proposals">Proposals</button>
+    <button class="tab" role="tab" id="tabBtn-guide" aria-controls="tab-guide" aria-selected="false" data-tab="guide">How RSKIPs work</button>
+  </div>
+
+  <div id="tab-proposals" role="tabpanel" aria-labelledby="tabBtn-proposals">
+
   <section class="stats" id="stats"></section>
 
   <section class="controls">
@@ -180,7 +257,7 @@
 
   <div class="meta-row"><span id="count"></span><span><button class="btn-link" id="expandAll">Expand all</button> <button class="btn-link" id="reset">Reset filters</button></span></div>
 
-  <table>
+  <table class="list">
     <thead><tr>
       <th data-k="num">RSKIP<span class="arr"></span></th>
       <th data-k="title">Title<span class="arr"></span></th>
@@ -192,10 +269,202 @@
     </tr></thead>
     <tbody id="rows"></tbody>
   </table>
+  </div>
+
+  <section id="tab-guide" class="guide" hidden aria-labelledby="tabBtn-guide">
+    <nav class="toc" aria-label="On this page">
+      <span class="toc-h">On this page</span>
+      <button type="button" data-goto="g-what">What an RSKIP is</button>
+      <button type="button" data-goto="g-life">Lifecycle</button>
+      <button type="button" data-goto="g-submit">Submitting one</button>
+      <button type="button" data-goto="g-types">Types</button>
+      <button type="button" data-goto="g-labels">Labels on this site</button>
+      <button type="button" data-goto="g-parts">What to include</button>
+      <button type="button" data-goto="g-header">Header fields</button>
+      <button type="button" data-goto="g-owner">Files and ownership</button>
+      <button type="button" data-goto="g-editors">Editors</button>
+    </nav>
+
+    <div class="guide-body">
+      <p class="guide-lede">How Rootstock Improvement Proposals work, from first idea to adoption. Summarised from <a href="https://github.com/rsksmart/RSKIPs/blob/master/IPs/RSKIP0.md" target="_blank" rel="noopener">RSKIP-0: Purpose and Guidelines</a>, which has the full text.</p>
+
+      <section id="g-what">
+        <h2>What an RSKIP is</h2>
+        <p>RSKIP stands for RSK Improvement Proposal. It's a design document that describes a new feature for Rootstock, its processes or its environment. It should give a concise technical spec and the reasoning behind the feature. The author is responsible for building consensus in the community and recording dissenting opinions.</p>
+        <p>RSKIPs are the main way to propose new features, collect community input on an issue and document the design decisions behind Rootstock. They live as text files in a versioned repo, so the revision history is the historical record of each proposal. For implementers, they're a simple way to track which proposals a client or library supports.</p>
+      </section>
+
+      <section id="g-life">
+        <h2>Lifecycle</h2>
+        <p>RSKIP editors change a proposal's status. Solid arrows are the usual path. Dashed arrows only apply in some cases, such as when a hard or soft fork is needed.</p>
+        <div class="diagram" role="img" aria-label="RSKIP status flow. Draft can move to Accepted, Rejected, Withdrawn or Deferred; Rejected and Deferred can return to Draft. Accepted moves to Active, via Fork Pending if a fork is needed. Active proposals can later be Replaced. Active and Replaced both end with the RSKIP list being updated.">
+          <svg viewBox="0 0 800 350" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="d-head"/></marker>
+            </defs>
+            <g class="d-edges">
+              <path d="M170 110H236" marker-end="url(#arr)"/>
+              <path d="M105 134V180H236" marker-start="url(#arr)" marker-end="url(#arr)"/>
+              <path d="M105 130V250H236" marker-end="url(#arr)"/>
+              <path d="M105 134V320H236" marker-start="url(#arr)" marker-end="url(#arr)"/>
+              <path d="M370 110H466" marker-end="url(#arr)"/>
+              <path d="M370 98H415V40H466" class="dash" marker-end="url(#arr)"/>
+              <path d="M535 60V86" class="dash" marker-end="url(#arr)"/>
+              <path d="M510 130V226" class="dash" marker-end="url(#arr)"/>
+              <path d="M600 110H715V226" marker-end="url(#arr)"/>
+              <path d="M600 250H646" marker-end="url(#arr)"/>
+            </g>
+            <g class="d-nodes">
+              <g class="n draft"><rect x="40" y="90" width="130" height="40" rx="20"/><text x="105" y="115">Draft</text></g>
+              <g class="n accepted"><rect x="240" y="90" width="130" height="40" rx="20"/><text x="305" y="115">Accepted</text></g>
+              <g class="n"><rect x="240" y="160" width="130" height="40" rx="20"/><text x="305" y="185">Rejected</text></g>
+              <g class="n"><rect x="240" y="230" width="130" height="40" rx="20"/><text x="305" y="255">Withdrawn</text></g>
+              <g class="n"><rect x="240" y="300" width="130" height="40" rx="20"/><text x="305" y="325">Deferred</text></g>
+              <g class="n"><rect x="470" y="20" width="130" height="40" rx="20"/><text x="535" y="45">Fork pending</text></g>
+              <g class="n adopted"><rect x="470" y="90" width="130" height="40" rx="20"/><text x="535" y="115">Active</text></g>
+              <g class="n"><rect x="470" y="230" width="130" height="40" rx="20"/><text x="535" y="255">Replaced</text></g>
+              <g class="n end"><rect x="650" y="230" width="140" height="40" rx="20"/><text x="720" y="255">List updated</text></g>
+            </g>
+          </svg>
+        </div>
+        <h3>What each status means</h3>
+        <dl class="defs">
+          <div><dt><span class="badge" data-tone="draft">Draft</span></dt><dd>Open for consideration.</dd></div>
+          <div><dt><span class="badge" data-tone="accepted">Accepted</span></dt><dd>Planned for immediate adoption, expected in the next reference client release.</dd></div>
+          <div><dt><span class="badge">Active</span></dt><dd>Implemented and accepted by the community, where no hard or soft fork is needed.</dd></div>
+          <div><dt><span class="badge" data-tone="adopted">Adopted</span></dt><dd>Adopted in a previous reference client release.</dd></div>
+          <div><dt><span class="badge">Deferred</span></dt><dd>Not being considered for immediate adoption. Set when no progress is being made. An editor can move it back to Draft later.</dd></div>
+          <div><dt><span class="badge">Rejected</span></dt><dd>Turned down. It stays on record so the decision isn't lost.</dd></div>
+          <div><dt><span class="badge">Withdrawn</span></dt><dd>Withdrawn by its authors. This is final: the number can't be reused, and picking the idea up later means a new proposal.</dd></div>
+          <div><dt><span class="badge">Superseded</span></dt><dd>Made obsolete by a later RSKIP.</dd></div>
+        </dl>
+        <p class="note">Status definitions come from the <a href="https://github.com/rsksmart/RSKIPs#rskip-status-terms" target="_blank" rel="noopener">RSKIPs README</a>. The diagram is from RSKIP-0, which calls Superseded "Replaced".</p>
+      </section>
+
+      <section id="g-submit">
+        <h2>Submitting one</h2>
+        <ol class="steps">
+          <li><strong>Test the idea in public first.</strong> Ask whether it's original and whether it has a chance, before spending time writing it up. Start a thread on the <a href="https://research.rsk.dev/c/rskip/13" target="_blank" rel="noopener">Rootstock Research Forum</a> or open an <a href="https://github.com/rsksmart/RSKIPs/issues" target="_blank" rel="noopener">issue on GitHub</a>, and tag the RSKIP editors.</li>
+          <li><strong>Keep it focused.</strong> One key proposal per RSKIP works best. A change to a single client doesn't need an RSKIP, but a change that affects several clients or sets a standard for apps does. If in doubt, split it up.</li>
+          <li><strong>Find a champion.</strong> Every RSKIP needs someone to write it, lead the discussion and build consensus around it.</li>
+          <li><strong>Open a draft as a <a href="https://github.com/rsksmart/RSKIPs/pulls" target="_blank" rel="noopener">pull request</a>.</strong> Use the <a href="https://github.com/rsksmart/RSKIPs/blob/master/IPs/RSKIP0_TEMPLATE.md" target="_blank" rel="noopener">template</a>, in Markdown. This lets you keep editing while people comment.</li>
+          <li><strong>Get a number.</strong> If the editors approve, the PR number becomes the RSKIP number. It's labelled Standards Track, Informational or Process and set to Draft, and the editors add its complexity and purpose. They won't refuse without a reason, such as duplicate work, technical problems, weak motivation or backward-compatibility issues.</li>
+          <li><strong>Implement it.</strong> A Standards Track RSKIP must include an implementation (code, a patch or a link to one) before it can be Accepted or Fork Pending.</li>
+          <li><strong>Get accepted.</strong> It needs to be a clear, complete description of a net improvement, and the implementation mustn't complicate the protocol unduly. Once the implementation is done and accepted, the status moves to Fork Pending if a fork is needed, or Active if not.</li>
+        </ol>
+        <p>Reviewers are expected to give thoughtful, actionable feedback, not rejections without reasons. Where they can, they should point out a path that could lead to acceptance.</p>
+      </section>
+
+      <section id="g-types">
+        <h2>Types</h2>
+        <dl class="defs wide">
+          <div><dt>Standards Track</dt><dd>Changes that affect most or all Rootstock implementations: network protocol, block or transaction validity rules, or anything that affects how apps on Rootstock work together. Split into categories: Core (consensus), Node (node interfaces such as RPC), Net (p2p networking), UI (user interface), 2nd (second-layer protocols such as payment channels) and DApp (dapp interfaces). Made of a design document, a reference implementation and, if needed, an update to the formal spec.</dd></div>
+          <div><dt>Informational</dt><dd>Describes a design issue or gives general guidance without proposing a feature. It doesn't necessarily reflect community consensus, so people are free to ignore it.</dd></div>
+          <div><dt>Process</dt><dd>Describes or changes a process around Rootstock, such as procedures, decision-making or development tools, rather than the protocol itself. Usually needs community consensus, and people generally can't ignore it.</dd></div>
+        </dl>
+      </section>
+
+      <section id="g-labels">
+        <h2>Labels on this site</h2>
+        <div class="label-grid">
+          <div>
+            <h3>Purpose</h3>
+            <p>What the RSKIP improves. It can have more than one. RSKIP files use the short codes; this site shows the full names.</p>
+            <ul class="kv">
+              <li><span class="tag">Sca</span> Scalability</li>
+              <li><span class="tag">Usa</span> Usability</li>
+              <li><span class="tag">Sec</span> Security</li>
+              <li><span class="tag">Fair</span> Fairness</li>
+              <li><span class="tag">ST</span> Standard Track</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Layer</h3>
+            <p>Which part of Rootstock it touches.</p>
+            <ul class="kv">
+              <li><span class="tag">Core</span> Consensus</li>
+              <li><span class="tag">Node</span> Node interfaces, such as RPC</li>
+              <li><span class="tag">Net</span> P2P networking</li>
+              <li><span class="tag">UI</span> User interface</li>
+              <li><span class="tag">2nd</span> Second-layer protocols</li>
+              <li><span class="tag">DApp</span> Dapp interfaces</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Complexity</h3>
+            <p>How hard it is to implement.</p>
+            <ul class="kv">
+              <li><span class="cxbar"><i class="f"></i><i></i><i></i></span> 1 · Minimal</li>
+              <li><span class="cxbar"><i class="f"></i><i class="f"></i><i></i></span> 2 · Medium</li>
+              <li><span class="cxbar"><i class="f"></i><i class="f"></i><i class="f"></i></span> 3 · High</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="g-parts">
+        <h2>What to include</h2>
+        <dl class="defs wide">
+          <div><dt>Preamble</dt><dd>Header metadata: number, a short title (44 characters max), authors and so on. See header fields below.</dd></div>
+          <div><dt>Abstract</dt><dd>A short description of the technical issue, around 200 words.</dd></div>
+          <div><dt>Motivation</dt><dd>Why the current protocol can't solve the problem. Critical for protocol changes. Proposals without enough motivation may be rejected outright.</dd></div>
+          <div><dt>Specification</dt><dd>The syntax and semantics of any new feature, detailed enough for competing, interoperable implementations.</dd></div>
+          <div><dt>Rationale</dt><dd>Why the design choices were made, what alternatives were considered, related work, evidence of consensus and the main objections raised.</dd></div>
+          <div><dt>Backward compatibility</dt><dd>Required if anything breaks: what, how badly and how the author plans to handle it.</dd></div>
+          <div><dt>Implementations</dt><dd>Must be finished before the RSKIP is final, but not before it's accepted. "Rough consensus and running code" still helps settle API details.</dd></div>
+          <div><dt>Test cases</dt><dd>Required for consensus changes. Optional links for everything else.</dd></div>
+          <div><dt>Copyright waiver</dt><dd>All RSKIPs must be public domain (CC0).</dd></div>
+        </dl>
+        <p>The final implementation must include test code and documentation.</p>
+      </section>
+
+      <section id="g-header">
+        <h2>Header fields</h2>
+        <p>Each RSKIP starts with a header between two lines of three hyphens (<code>---</code>), in this order:</p>
+        <div class="table-wrap">
+          <table class="fields">
+            <tbody>
+              <tr><th>RSKIP</th><td>Number, set by the editor</td></tr>
+              <tr><th>Title</th><td>RSKIP title</td></tr>
+              <tr><th>Author</th><td>Real names, optionally with email or GitHub user. One author per line.</td></tr>
+              <tr><th>Discussions-To</th><td>Where it's being discussed, if not privately or on the forum</td></tr>
+              <tr><th>Status</th><td>Draft, Active, Accepted, Deferred, Rejected, Withdrawn, Adopted or Superseded</td></tr>
+              <tr><th>Type</th><td>Standards Track (with category), Informational or Process</td></tr>
+              <tr><th>Created</th><td>Date the number was assigned, as yyyy-mm-dd</td></tr>
+              <tr><th>Replaces</th><td>RSKIP number this one makes obsolete</td></tr>
+              <tr><th>Superseded-By</th><td>RSKIP number that replaces this one</td></tr>
+              <tr><th>Resolution</th><td>Link to where the decision was announced. Standards Track only.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">RSKIPs can also have a Requires header listing the RSKIPs they depend on, and a Post-History header with the dates new versions were posted to the forum.</p>
+      </section>
+
+      <section id="g-owner">
+        <h2>Files and ownership</h2>
+        <p><strong>Extra files</strong> such as diagrams go in a subfolder for that RSKIP and are named <code>RSKIP-XXXX-Y.ext</code>, where XXXX is the RSKIP number and Y is a serial number starting at 1.</p>
+        <p><strong>Changing owner</strong> is fine when the original author no longer has time for it or can't be reached. Disagreeing with the direction isn't a good reason: write a competing RSKIP instead. To take one over, message both the original author and the editors. If the author doesn't reply promptly, the editors decide. Ideally the original author stays on as co-author.</p>
+      </section>
+
+      <section id="g-editors">
+        <h2>Editors</h2>
+        <ul class="editors">
+          <li><a href="https://github.com/sergioLerner" target="_blank" rel="noopener">Sergio Lerner</a></li>
+          <li><a href="https://github.com/julianlen" target="_blank" rel="noopener">Julian Len</a></li>
+          <li><a href="https://github.com/diegomasini" target="_blank" rel="noopener">Diego Masini</a></li>
+          <li><a href="https://github.com/smishraIOV" target="_blank" rel="noopener">Shreemoy Mishra</a></li>
+          <li><a href="https://github.com/javicid" target="_blank" rel="noopener">Javier Alvarez Cid-Fuentes</a></li>
+          <li><a href="https://github.com/raullaprida" target="_blank" rel="noopener">Raul Laprida</a></li>
+        </ul>
+        <p>Editors don't judge proposals. They handle the admin: checking each RSKIP is sound and complete, that the title fits and that the language and formatting are clean. If it isn't ready, they send it back with specific instructions. When it is, they add it to the repo, list it in the README and tell the author the next step.</p>
+        <p class="note">RSKIP-0 is based on Ethereum's EIP-1 and Bitcoin's BIP-0001, which came from Python's PEP-0001. It's published under CC0.</p>
+      </section>
+    </div>
+  </section>
 
   <footer>
     <div class="legend">
-      <span>Sca = Scalability</span><span>Usa = Usability</span><span>Sec = Security</span><span>Fair = Fairness</span><span>ST = Standard track</span>
+      Purposes: <a href="https://ips.rootstock.io/scalability.html" target="_blank" rel="noopener">Scalability</a><a href="https://ips.rootstock.io/security.html" target="_blank" rel="noopener">Security</a><a href="https://ips.rootstock.io/usability.html" target="_blank" rel="noopener">Usability</a><a href="https://ips.rootstock.io/fairness.html" target="_blank" rel="noopener">Fairness</a><a href="https://ips.rootstock.io/standardtrack.html" target="_blank" rel="noopener">Standard Track</a>
     </div>
     <p>“Upcoming” = Draft + Accepted. Data is read directly from <a href="https://github.com/rsksmart/RSKIPs">rsksmart/RSKIPs</a> each time the page loads; a bundled snapshot is used if GitHub can't be reached. Unofficial explorer, not maintained by the RSKIP authors.</p>
   </footer>
@@ -207,6 +476,7 @@
   const REPO = 'rsksmart/RSKIPs', BRANCH = 'master';
   const RAW = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/`;
   const STATUS_ORDER = ['Draft', 'Accepted', 'Adopted (Testnet)', 'Adopted', 'Deferred', 'Rejected', 'Withdrawn', 'Superseded', 'Unknown'];
+  const PURPOSE_NAME = { Sca: 'Scalability', Usa: 'Usability', Sec: 'Security', Fair: 'Fairness', ST: 'Standard Track' };
   const TONE = { Draft: 'draft', Accepted: 'accepted', 'Adopted (Testnet)': 'testnet', Adopted: 'adopted' };
   const tone = (s) => TONE[s] || 'closed';
   const UPCOMING = ['Draft', 'Accepted'];
@@ -231,7 +501,7 @@
     ['q', 'layer', 'complexity'].forEach((k) => state[k] && p.set(k, state[k]));
     if (`${state.sort}:${state.dir}` !== 'created:desc') p.set('sort', `${state.sort}:${state.dir}`);
     const s = p.toString();
-    history.replaceState(null, '', s ? `?${s}` : location.pathname);
+    history.replaceState(null, '', (s ? `?${s}` : location.pathname) + location.hash);
   }
 
   // --- Data loading --------------------------------------------------------
@@ -297,7 +567,7 @@
     if (state.complexity && String(x.complexity) !== state.complexity) return false;
     if (state.q) {
       const q = state.q.toLowerCase().replace(/^rskip[-\s]*/, '');
-      const hay = `${x.num} ${x.title} ${x.authors.map((a) => a.name + ' ' + a.id).join(' ')} ${x.abstract}`.toLowerCase();
+      const hay = `${x.num} ${x.title} ${x.authors.map((a) => a.name + ' ' + a.id).join(' ')} ${x.purpose.map((p) => PURPOSE_NAME[p]).join(' ')} ${x.abstract}`.toLowerCase();
       if (!q.split(/\s+/).every((w) => hay.includes(w))) return false;
     }
     return true;
@@ -370,7 +640,7 @@
         <td class="num">#${x.num}</td>
         <td class="title">${esc(x.title)}<span class="authors">${esc(x.authors.map((a) => a.name).join(', ') || 'Unknown author')}</span></td>
         <td class="status"><span class="badge" data-tone="${tone(x.status)}">${esc(x.status)}</span></td>
-        <td class="purpose">${x.purpose.map((p) => `<span class="tag">${p}</span>`).join('') || '<span class="tag">—</span>'}</td>
+        <td class="purpose">${x.purpose.map((p) => `<span class="tag">${PURPOSE_NAME[p] || p}</span>`).join('') || '<span class="tag">—</span>'}</td>
         <td class="layer"><span class="tag">${esc(x.layer)}</span></td>
         <td class="cx" title="Complexity ${x.complexity ?? 'unknown'}">${x.complexity ? `<span class="cxbar">${[1, 2, 3].map((i) => `<i class="${i <= x.complexity ? 'f' : ''}"></i>`).join('')}</span>` : '—'}</td>
         <td class="date">${esc(x.created || '—')}</td>
@@ -395,6 +665,31 @@
     update();
   });
   $('reset').onclick = () => { Object.assign(state, { q: '', statuses: new Set(UPCOMING), purpose: '', layer: '', complexity: '', sort: 'created', dir: 'desc' }); update(); };
+
+  // --- Tabs ----------------------------------------------------------------
+  function showTab(name) {
+    const guide = name === 'guide';
+    $('tab-proposals').hidden = guide; $('tab-guide').hidden = !guide;
+    $('tabBtn-proposals').setAttribute('aria-selected', String(!guide));
+    $('tabBtn-guide').setAttribute('aria-selected', String(guide));
+  }
+  document.querySelectorAll('.tab').forEach((b) => b.onclick = () => {
+    const name = b.dataset.tab;
+    try { history.replaceState(null, '', location.pathname + location.search + (name === 'guide' ? '#guide' : '')); } catch (e) {}
+    showTab(name); window.scrollTo({ top: 0 });
+  });
+  document.querySelectorAll('[role=tab]').forEach((b, i, all) => b.onkeydown = (e) => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    const next = all[(i + (e.key === 'ArrowRight' ? 1 : all.length - 1)) % all.length]; next.focus(); next.click();
+  });
+  showTab(location.hash === '#guide' ? 'guide' : 'proposals');
+  document.querySelectorAll('.toc button').forEach((b) => b.onclick = () => {
+    document.getElementById(b.dataset.goto).scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  });
+  const tocObs = 'IntersectionObserver' in window && new IntersectionObserver((entries) => entries.forEach((en) => {
+    if (en.isIntersecting) document.querySelectorAll('.toc button').forEach((b) => b.classList.toggle('on', b.dataset.goto === en.target.id));
+  }), { rootMargin: '-10% 0px -70% 0px' });
+  if (tocObs) document.querySelectorAll('.guide-body > section').forEach((s) => tocObs.observe(s));
 
   // --- Theme ---------------------------------------------------------------
   const root = document.documentElement;

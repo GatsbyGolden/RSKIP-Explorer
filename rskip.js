@@ -24,7 +24,7 @@
     if (!m) return out;
     for (const line of m[1].split('\n')) {
       const kv = line.match(/^([a-zA-Z_-]+):\s*(.*)$/);
-      if (kv) out[kv[1].toLowerCase()] = kv[2].trim();
+      if (kv) out[kv[1].toLowerCase()] = kv[2].trim().replace(/^(["'])(.*)\1$/, '$2');
     }
     return out;
   }
