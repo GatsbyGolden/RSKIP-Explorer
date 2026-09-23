@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RSKIP Explorer</title>
+<meta name="description" content="Browse, filter and sort Rootstock Improvement Proposals (RSKIPs), loaded live from github.com/rsksmart/RSKIPs.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230B0B0D'/><path d='M9 23V9h8a5 5 0 0 1 0 10h-3l6 4' stroke='%23FF9100' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0B0B0D; --panel: #141418; --panel-2: #1C1C22; --line: #2A2A33;
+    --text: #F3F3F5; --muted: #9A9AA6; --pink: #FF71E1; --orange: #FF9100;
+    --green: #5BD9A0; --blue: #7CB7FF; --red: #FF6B6B; --grey: #8A8A96;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --sans: 'Space Grotesk', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--sans); }
+  body { min-height: 100vh; }
+  a { color: var(--orange); }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 32px 20px 64px; }
+
+  header .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--pink); }
+  header h1 { font-size: clamp(30px, 5vw, 48px); line-height: 1.05; margin: 10px 0 10px; font-weight: 700; }
+  header h1 span { background: linear-gradient(90deg, var(--pink), var(--orange)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  header p { color: var(--muted); margin: 0; max-width: 680px; line-height: 1.5; }
+  .source { margin-top: 14px; font-family: var(--mono); font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--grey); flex: none; }
+  .dot.live { background: var(--green); box-shadow: 0 0 0 3px rgba(91,217,160,.18); }
+  .dot.loading { background: var(--orange); animation: pulse 1s infinite alternate; }
+  @keyframes pulse { to { opacity: .3; } }
+
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 28px 0 22px; }
+  .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; cursor: pointer; text-align: left; color: inherit; font: inherit; transition: border-color .15s; }
+  .stat:hover { border-color: var(--muted); }
+  .stat.on { border-color: var(--orange); }
+  .stat b { display: block; font-size: 28px; font-variant-numeric: tabular-nums; }
+  .stat small { font-family: var(--mono); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+  .search { flex: 1 1 260px; position: relative; }
+  .search input { width: 100%; }
+  input, select { background: var(--panel-2); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; font: 14px var(--sans); outline: none; }
+  input:focus, select:focus { border-color: var(--orange); }
+  select { cursor: pointer; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .chip { border: 1px solid var(--line); background: transparent; color: var(--muted); border-radius: 999px; padding: 5px 11px; font: 12px var(--mono); cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+  .chip .n { opacity: .6; }
+  .chip.on { color: var(--text); border-color: currentColor; }
+  .chip.on[data-s] { color: var(--c); }
+  .btn-link { background: none; border: 0; color: var(--muted); font: 12px var(--mono); cursor: pointer; text-decoration: underline; padding: 5px 4px; }
+
+  .meta-row { display: flex; justify-content: space-between; align-items: center; margin: 18px 2px 8px; font-family: var(--mono); font-size: 12px; color: var(--muted); gap: 10px; flex-wrap: wrap; }
+
+  table { width: 100%; border-collapse: collapse; }
+  thead th { text-align: left; font: 600 11px var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding: 10px 10px; border-bottom: 1px solid var(--line); cursor: pointer; user-select: none; white-space: nowrap; }
+  thead th:hover { color: var(--text); }
+  thead th.sorted { color: var(--orange); }
+  thead th .arr { display: inline-block; width: 1em; }
+  tbody tr.row { cursor: pointer; border-bottom: 1px solid var(--line); }
+  tbody tr.row:hover { background: var(--panel); }
+  tbody td { padding: 12px 10px; vertical-align: top; font-size: 14px; }
+  td.num { font-family: var(--mono); color: var(--pink); white-space: nowrap; }
+  td.title { font-weight: 500; line-height: 1.35; }
+  td.title .authors { display: block; font-weight: 400; color: var(--muted); font-size: 12px; margin-top: 3px; }
+  td.date, td.cx { font-family: var(--mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .badge { display: inline-block; font: 600 11px var(--mono); padding: 3px 8px; border-radius: 6px; color: var(--c); background: color-mix(in srgb, var(--c) 14%, transparent); white-space: nowrap; }
+  .tag { display: inline-block; font: 11px var(--mono); color: var(--muted); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; margin: 0 4px 4px 0; }
+  .cxbar { display: inline-flex; gap: 3px; vertical-align: middle; }
+  .cxbar i { width: 7px; height: 12px; border-radius: 2px; background: var(--line); }
+  .cxbar i.f { background: var(--orange); }
+  tr.detail td { background: var(--panel); padding: 4px 16px 18px 16px; border-bottom: 1px solid var(--line); }
+  tr.detail p { color: #CFCFD6; line-height: 1.6; margin: 10px 0 12px; max-width: 820px; }
+  tr.detail a { font: 13px var(--mono); }
+  .empty, .error { text-align: center; color: var(--muted); padding: 48px 12px; }
+  footer { margin-top: 40px; color: var(--muted); font-size: 12px; font-family: var(--mono); line-height: 1.7; }
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+
+  @media (max-width: 760px) {
+    .wrap { padding: 24px 16px 48px; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    thead { display: none; }
+    table, tbody, tr, td { display: block; width: 100%; }
+    tbody tr.row { padding: 12px 0; display: grid; grid-template-columns: auto 1fr auto; gap: 4px 10px; }
+    tbody td { padding: 0; }
+    td.num { grid-row: 1; grid-column: 1; }
+    td.status { grid-row: 1; grid-column: 3; }
+    td.title { grid-row: 2; grid-column: 1 / -1; }
+    td.purpose { grid-row: 3; grid-column: 1 / -1; }
+    td.layer, td.cx { display: none; }
+    td.date { grid-row: 1; grid-column: 2; }
+    .controls select { flex: 1 1 45%; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Rootstock Improvement Proposals</div>
+    <h1>RSKIP <span>Explorer</span></h1>
+    <p>Review what's coming to Rootstock. Filter by status, layer and complexity, search across titles, authors and abstracts, and sort any column. Share your ideas and show your support on <a href="https://github.com/rsksmart/RSKIPs" target="_blank" rel="noopener">GitHub</a> or the <a href="https://research.rsk.dev/" target="_blank" rel="noopener">Rootstock Research Forum</a>.</p>
+    <div class="source"><span class="dot loading" id="dot"></span><span id="sourceText">Loading proposals…</span></div>
+  </header>
+
+  <section class="stats" id="stats"></section>
+
+  <section class="controls">
+    <div class="search"><input id="q" type="search" placeholder="Search number, title, author, abstract…" aria-label="Search"></div>
+    <select id="layer" aria-label="Category"><option value="">All categories</option></select>
+    <select id="complexity" aria-label="Complexity"><option value="">Any complexity</option><option value="1">1 · Minimal</option><option value="2">2 · Medium</option><option value="3">3 · High</option></select>
+    <select id="sortSel" aria-label="Sort">
+      <option value="created:desc">Newest first</option>
+      <option value="created:asc">Oldest first</option>
+      <option value="num:desc">Number ↓</option>
+      <option value="num:asc">Number ↑</option>
+      <option value="title:asc">Title A–Z</option>
+      <option value="status:asc">Status</option>
+      <option value="complexity:desc">Complexity ↓</option>
+    </select>
+  </section>
+  <div class="chips" id="statusChips"></div>
+
+  <div class="meta-row"><span id="count"></span><span><button class="btn-link" id="expandAll">Expand all</button> <button class="btn-link" id="reset">Reset filters</button></span></div>
+
+  <table>
+    <thead><tr>
+      <th data-k="num">RSKIP<span class="arr"></span></th>
+      <th data-k="title">Title<span class="arr"></span></th>
+      <th data-k="status">Status<span class="arr"></span></th>
+      <th data-k="purpose">Purpose<span class="arr"></span></th>
+      <th data-k="layer">Layer<span class="arr"></span></th>
+      <th data-k="complexity">Cx<span class="arr"></span></th>
+      <th data-k="created">Created<span class="arr"></span></th>
+    </tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+
+  <footer>
+    <div class="legend">
+      <span>Sca = Scalability</span><span>Usa = Usability</span><span>Sec = Security</span><span>Fair = Fairness</span><span>ST = Standard track</span>
+    </div>
+    <p>“Upcoming” = Draft + Accepted. Data is read directly from <a href="https://github.com/rsksmart/RSKIPs">rsksmart/RSKIPs</a> each time the page loads; a bundled snapshot is used if GitHub can't be reached. Unofficial explorer, not maintained by the RSKIP authors.</p>
+  </footer>
+</div>
+
+<script src="rskip.js"></script>
+<script>
+(() => {
+  const REPO = 'rsksmart/RSKIPs', BRANCH = 'master';
+  const RAW = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/`;
+  const STATUS_ORDER = ['Draft', 'Accepted', 'Adopted (Testnet)', 'Adopted', 'Deferred', 'Rejected', 'Withdrawn', 'Superseded', 'Unknown'];
+  const STATUS_COLOR = { Draft: 'var(--orange)', Accepted: 'var(--pink)', 'Adopted (Testnet)': 'var(--blue)', Adopted: 'var(--green)', Deferred: 'var(--grey)', Rejected: 'var(--red)', Withdrawn: 'var(--grey)', Superseded: 'var(--grey)', Unknown: 'var(--grey)' };
+  const UPCOMING = ['Draft', 'Accepted'];
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  let items = [];
+  const open = new Set();
+  const state = { q: '', statuses: new Set(UPCOMING), purpose: '', layer: '', complexity: '', sort: 'created', dir: 'desc' };
+
+  // --- URL state -----------------------------------------------------------
+  function readUrl() {
+    const p = new URLSearchParams(location.search);
+    if (p.has('status')) state.statuses = new Set(p.get('status') ? p.get('status').split(',') : []);
+    ['q', 'layer', 'complexity'].forEach((k) => { if (p.has(k)) state[k] = p.get(k); });
+    if (p.has('sort')) { const [k, d] = p.get('sort').split(':'); state.sort = k; state.dir = d || 'asc'; }
+  }
+  function writeUrl() {
+    const p = new URLSearchParams();
+    const st = [...state.statuses].join(',');
+    if (st !== UPCOMING.join(',')) p.set('status', st);
+    ['q', 'layer', 'complexity'].forEach((k) => state[k] && p.set(k, state[k]));
+    if (`${state.sort}:${state.dir}` !== 'created:desc') p.set('sort', `${state.sort}:${state.dir}`);
+    const s = p.toString();
+    history.replaceState(null, '', s ? `?${s}` : location.pathname);
+  }
+
+  // --- Data loading --------------------------------------------------------
+  async function loadSnapshot() {
+    const r = await fetch('data.json', { cache: 'no-cache' });
+    if (!r.ok) throw new Error('snapshot missing');
+    return r.json();
+  }
+  async function loadLive(knownPaths) {
+    // File list from the GitHub API; if it's rate-limited, re-read the known files from raw.githubusercontent.com.
+    let paths;
+    try {
+      const r = await fetch(`https://api.github.com/repos/${REPO}/git/trees/${BRANCH}?recursive=1`);
+      if (!r.ok) throw new Error(`GitHub API ${r.status}`);
+      paths = (await r.json()).tree.map((t) => t.path).filter(RSKIP.isRskipFile);
+    } catch (e) {
+      if (!knownPaths.length) throw e;
+      paths = knownPaths;
+    }
+    const readme = await fetch(RAW + 'README.md').then((r) => r.text()).catch(() => '');
+    const names = RSKIP.parseAuthorIndex(readme);
+    const out = [];
+    let i = 0, done = 0;
+    async function worker() {
+      while (i < paths.length) {
+        const p = paths[i++];
+        try {
+          const txt = await fetch(RAW + p).then((r) => { if (!r.ok) throw 0; return r.text(); });
+          out.push(RSKIP.parseRskip(p, txt, names));
+        } catch (e) { /* skip unreadable file */ }
+        if (++done % 25 === 0) setSource('loading', `Refreshing from GitHub… ${done}/${paths.length}`);
+      }
+    }
+    await Promise.all(Array.from({ length: 16 }, worker));
+    if (out.length < paths.length * 0.9) throw new Error('too many files failed');
+    return out.sort((a, b) => a.num - b.num);
+  }
+  function setSource(kind, text) { $('dot').className = 'dot ' + kind; $('sourceText').innerHTML = text; }
+  const fmtDate = (iso) => new Date(iso).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+
+  async function init() {
+    readUrl();
+    syncControls();
+    try {
+      const snap = await loadSnapshot();
+      items = snap.items; buildOptions(); render();
+      setSource('loading', `Showing snapshot from ${fmtDate(snap.generated)} · refreshing from GitHub…`);
+      var snapDate = snap.generated;
+    } catch (e) { /* no snapshot, wait for live */ }
+    try {
+      items = await loadLive(items.map((x) => x.path)); buildOptions(); render();
+      setSource('live', `Live from <a href="https://github.com/${REPO}">${REPO}</a> · loaded ${fmtDate(new Date())}`);
+    } catch (e) {
+      if (items.length) setSource('', `GitHub unavailable (${esc(e.message)}). Showing snapshot from ${fmtDate(snapDate)}.`);
+      else { setSource('', 'Could not load proposals.'); $('rows').innerHTML = `<tr><td colspan="7" class="error">Couldn't reach GitHub. Try again in a minute.</td></tr>`; }
+    }
+  }
+
+  // --- Filtering / sorting -------------------------------------------------
+  function matches(x, ignoreStatus) {
+    if (!ignoreStatus && !state.statuses.has(x.status)) return false;
+    if (state.layer && !x.layer.split(', ').includes(state.layer)) return false;
+    if (state.complexity && String(x.complexity) !== state.complexity) return false;
+    if (state.q) {
+      const q = state.q.toLowerCase().replace(/^rskip[-\s]*/, '');
+      const hay = `${x.num} ${x.title} ${x.authors.map((a) => a.name + ' ' + a.id).join(' ')} ${x.abstract}`.toLowerCase();
+      if (!q.split(/\s+/).every((w) => hay.includes(w))) return false;
+    }
+    return true;
+  }
+  function cmp(a, b) {
+    const k = state.sort, d = state.dir === 'asc' ? 1 : -1;
+    let va = a[k], vb = b[k];
+    if (k === 'status') { va = STATUS_ORDER.indexOf(va); vb = STATUS_ORDER.indexOf(vb); }
+    if (k === 'purpose') { va = va.join(','); vb = vb.join(','); }
+    const emptyA = va === null || va === '' || va === '—', emptyB = vb === null || vb === '' || vb === '—';
+    if (emptyA !== emptyB) return emptyA ? 1 : -1; // blanks always last
+    if (va < vb) return -d; if (va > vb) return d;
+    return b.num - a.num;
+  }
+
+  // --- Rendering -----------------------------------------------------------
+  function buildOptions() {
+    const fill = (sel, vals, label) => {
+      const cur = state[sel];
+      $(sel).innerHTML = `<option value="">${label}</option>` + vals.map((v) => `<option ${v === cur ? 'selected' : ''}>${esc(v)}</option>`).join('');
+    };
+    fill('layer', [...new Set(items.flatMap((x) => x.layer.split(', ')))].filter((l) => l !== '—').sort(), 'All categories');
+  }
+  function syncControls() {
+    $('q').value = state.q; $('complexity').value = state.complexity;
+    const sv = `${state.sort}:${state.dir}`;
+    $('sortSel').value = [...$('sortSel').options].some((o) => o.value === sv) ? sv : '';
+  }
+
+  function render() {
+    // stats
+    const count = (f) => items.filter(f).length;
+    const presets = [
+      { key: 'upcoming', label: 'Upcoming', set: UPCOMING, n: count((x) => UPCOMING.includes(x.status)) },
+      { key: 'draft', label: 'Draft', set: ['Draft'], n: count((x) => x.status === 'Draft') },
+      { key: 'adopted', label: 'Adopted', set: ['Adopted', 'Adopted (Testnet)'], n: count((x) => x.status.startsWith('Adopted')) },
+      { key: 'all', label: 'All RSKIPs', set: STATUS_ORDER, n: items.length },
+    ];
+    const present = STATUS_ORDER.filter((s) => items.some((x) => x.status === s));
+    presets[3].set = present;
+    const norm = (set) => [...set].filter((s) => present.includes(s)).sort().join();
+    const cur = norm(state.statuses);
+    $('stats').innerHTML = presets.map((p) => `<button class="stat ${norm(p.set) === cur ? 'on' : ''}" data-preset="${p.key}"><b>${p.n}</b><small>${p.label}</small></button>`).join('');
+    $('stats').querySelectorAll('.stat').forEach((b) => b.onclick = () => { state.statuses = new Set(presets.find((p) => p.key === b.dataset.preset).set); update(); });
+
+    // status chips (counts respect the other filters)
+    const base = items.filter((x) => matches(x, true));
+    $('statusChips').innerHTML = present.map((s) => `<button class="chip ${state.statuses.has(s) ? 'on' : ''}" data-s="${esc(s)}" style="--c:${STATUS_COLOR[s]}">${esc(s)} <span class="n">${base.filter((x) => x.status === s).length}</span></button>`).join('');
+    $('statusChips').querySelectorAll('.chip').forEach((c) => c.onclick = (e) => {
+      const s = c.dataset.s;
+      if (e.altKey || e.metaKey) state.statuses = new Set([s]);
+      else state.statuses.has(s) ? state.statuses.delete(s) : state.statuses.add(s);
+      update();
+    });
+
+    // headers
+    document.querySelectorAll('thead th').forEach((th) => {
+      const on = th.dataset.k === state.sort;
+      th.classList.toggle('sorted', on);
+      th.querySelector('.arr').textContent = on ? (state.dir === 'asc' ? ' ↑' : ' ↓') : '';
+    });
+
+    // rows
+    const list = base.filter((x) => state.statuses.has(x.status)).sort(cmp);
+    $('count').textContent = `${list.length} of ${items.length} proposals`;
+    if (!list.length) { $('rows').innerHTML = `<tr><td colspan="7" class="empty">No proposals match these filters.</td></tr>`; return; }
+    $('rows').innerHTML = list.map((x) => {
+      const url = `https://github.com/${REPO}/blob/${BRANCH}/${x.path}`;
+      const row = `<tr class="row" data-n="${x.num}">
+        <td class="num">#${x.num}</td>
+        <td class="title">${esc(x.title)}<span class="authors">${esc(x.authors.map((a) => a.name).join(', ') || 'Unknown author')}</span></td>
+        <td class="status"><span class="badge" style="--c:${STATUS_COLOR[x.status] || 'var(--grey)'}">${esc(x.status)}</span></td>
+        <td class="purpose">${x.purpose.map((p) => `<span class="tag">${p}</span>`).join('') || '<span class="tag">—</span>'}</td>
+        <td class="layer"><span class="tag">${esc(x.layer)}</span></td>
+        <td class="cx" title="Complexity ${x.complexity ?? 'unknown'}">${x.complexity ? `<span class="cxbar">${[1, 2, 3].map((i) => `<i class="${i <= x.complexity ? 'f' : ''}"></i>`).join('')}</span>` : '—'}</td>
+        <td class="date">${esc(x.created || '—')}</td>
+      </tr>`;
+      const detail = open.has(x.num) ? `<tr class="detail"><td colspan="7"><p>${esc(x.abstract || 'No abstract found.')}</p><a href="${url}" target="_blank" rel="noopener">Read RSKIP-${x.num} on GitHub →</a></td></tr>` : '';
+      return row + detail;
+    }).join('');
+    $('rows').querySelectorAll('tr.row').forEach((tr) => tr.onclick = () => { const n = +tr.dataset.n; open.has(n) ? open.delete(n) : open.add(n); render(); });
+    $('expandAll').textContent = list.every((x) => open.has(x.num)) ? 'Collapse all' : 'Expand all';
+    $('expandAll').onclick = () => { const all = list.every((x) => open.has(x.num)); list.forEach((x) => all ? open.delete(x.num) : open.add(x.num)); render(); };
+  }
+  function update() { writeUrl(); syncControls(); render(); }
+
+  // --- Events --------------------------------------------------------------
+  let t; $('q').oninput = (e) => { clearTimeout(t); t = setTimeout(() => { state.q = e.target.value.trim(); update(); }, 120); };
+  ['layer', 'complexity'].forEach((k) => $(k).onchange = (e) => { state[k] = e.target.value; update(); });
+  $('sortSel').onchange = (e) => { const [k, d] = e.target.value.split(':'); state.sort = k; state.dir = d; update(); };
+  document.querySelectorAll('thead th').forEach((th) => th.onclick = () => {
+    const k = th.dataset.k;
+    if (state.sort === k) state.dir = state.dir === 'asc' ? 'desc' : 'asc';
+    else { state.sort = k; state.dir = ['created', 'complexity', 'num'].includes(k) ? 'desc' : 'asc'; }
+    update();
+  });
+  $('reset').onclick = () => { Object.assign(state, { q: '', statuses: new Set(UPCOMING), purpose: '', layer: '', complexity: '', sort: 'created', dir: 'desc' }); update(); };
+
+  init();
+})();
+</script>
+</body>
+</html>
