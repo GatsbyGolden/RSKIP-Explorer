@@ -1,249 +1,64 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-l52qBzRxxWstT4+bhsS6HTfeg0EVXEDxD+Y8Rf0vzvo='; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self' https://api.github.com https://raw.githubusercontent.com; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>RSKIP Explorer</title>
-<meta name="description" content="Browse, filter and sort Rootstock Improvement Proposals (RSKIPs), loaded live from github.com/rsksmart/RSKIPs.">
+<meta name="description" content="Browse, filter and sort every Rootstock Improvement Proposal (RSKIP), kept in sync with github.com/rsksmart/RSKIPs.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#FAF9F5">
+<meta property="og:type" content="website">
+<meta property="og:title" content="RSKIP Explorer">
+<meta property="og:description" content="Every proposal to change Rootstock, in one place: drafts, accepted and live RSKIPs.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20id%3D%22Layer_2%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20340.13%20376.93%22%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill%3A%23ff931e%3B%7D%3C/style%3E%3C/defs%3E%3Cg%20id%3D%22Layer_1-2%22%3E%3Cg%3E%3Ccircle%20class%3D%22cls-1%22%20cx%3D%22170.16%22%20cy%3D%2251.8%22%20r%3D%2251.8%22/%3E%3Cpath%20class%3D%22cls-1%22%20d%3D%22M314.19%2C211.93c-24.79-14.29-56.46-5.78-70.75%2C19.01-4.92%2C8.53-7.13%2C17.87-6.92%2C27.04h0c.52%2C22.83-20.01%2C34.71-39.53%2C22.92-.77-.47-1.56-.93-2.36-1.36-19.74-11.02-19.73-34.49%2C.02-45.5%2C16.17-8.76%2C27.16-25.89%2C27.16-45.57%2C0-.4-.02-.79-.03-1.18l.02%2C.03c-.51-22.86%2C20.07-34.73%2C39.61-22.85h0c15.65%2C9.5%2C35.87%2C10.39%2C52.84%2C.58%2C24.77-14.31%2C33.25-46%2C18.94-70.77-14.31-24.77-46-33.25-70.77-18.94-16.96%2C9.8-26.27%2C27.73-25.88%2C46.02h0c.51%2C22.81-20%2C34.68-39.5%2C22.91-7.87-4.82-17.11-7.6-27.01-7.6s-19.14%2C2.78-27%2C7.59c-19.46%2C11.73-39.91-.12-39.39-22.88h0c.4-18.33-8.96-36.3-25.97-46.09-24.8-14.26-56.47-5.72-70.73%2C19.08-14.26%2C24.8-5.72%2C56.47%2C19.08%2C70.73%2C16.95%2C9.75%2C37.11%2C8.84%2C52.73-.63h0c19.49-11.83%2C40.02%2C.03%2C39.5%2C22.83l.02-.03c0%2C.4-.03%2C.8-.03%2C1.21%2C0%2C19.69%2C10.98%2C36.81%2C27.16%2C45.57%2C19.76%2C11.02%2C19.75%2C34.52-.02%2C45.52-.8%2C.43-1.58%2C.89-2.35%2C1.36-19.46%2C11.71-39.9-.15-39.38-22.91h0c.22-9.21-2.01-18.6-6.96-27.16-14.34-24.76-46.03-33.2-70.79-18.87C1.09%2C226.32-7.35%2C258.01%2C6.98%2C282.77c14.34%2C24.76%2C46.03%2C33.2%2C70.79%2C18.87%2C.32-.19%2C.63-.39%2C.95-.58l-.03%2C.04c19.51-11.84%2C40.04%2C.03%2C39.51%2C22.84l.02-.03c0%2C.42-.03%2C.85-.03%2C1.27%2C.03%2C28.61%2C23.24%2C51.78%2C51.85%2C51.75%2C28.61-.03%2C51.78-23.24%2C51.75-51.85%2C0-.38-.02-.76-.03-1.14l.02%2C.03c-.52-22.87%2C20.07-34.75%2C39.62-22.87l-.03-.05c.36%2C.22%2C.7%2C.44%2C1.06%2C.65%2C24.79%2C14.29%2C56.46%2C5.78%2C70.75-19.01%2C14.29-24.79%2C5.78-56.46-19.01-70.75Z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E">
-<style>
-  @font-face { font-family: 'Rootstock Sans Headline'; src: url('fonts/Rootstock-Sans-Headline.woff2') format('woff2'), url('fonts/Rootstock-Sans-Headline.woff') format('woff'); font-display: swap; }
-  @font-face { font-family: 'Rootstock Sans Body'; src: url('fonts/Rootstock-Sans-Body.woff2') format('woff2'), url('fonts/Rootstock-Sans-Body.woff') format('woff'); font-display: swap; }
-  @font-face { font-family: 'Rootstock Sans Tags'; src: url('fonts/Rootstock-Sans-Tags.woff2') format('woff2'), url('fonts/Rootstock-Sans-Tags.woff') format('woff'); font-display: swap; }
-
-  /* Light = Rootstock "Published" palette (off-white ground). */
-  :root {
-    color-scheme: light;
-    --orange: #FF9100; --pink: #FF71E1; --green: #79C600;
-    --bg: #FAF9F5; --surface: #F0EEE7; --field: #FFFFFF; --line: #DAD8D0; --line-strong: #000000;
-    --text: #000000; --muted: #5C5B55; --on-accent: #000000;
-    --link: #000000; --link-underline: #FF9100; --focus: #000000;
-    --mark-bg: #000000; --mark-text: #FAF9F5;
-    --t-draft: #FF9100; --t-accepted: #FF71E1; --t-adopted: #79C600;
-    --t-testnet-bg: transparent; --t-testnet-border: #79C600; --t-testnet-text: #000000;
-    --display: 'Rootstock Sans Headline', 'Helvetica Neue', Arial, sans-serif;
-    --body: 'Rootstock Sans Body', 'Helvetica Neue', Arial, sans-serif;
-    --tag: 'Rootstock Sans Tags', 'Helvetica Neue', Arial, sans-serif;
-  }
-  /* Dark = Rootstock "Editor" palette (black ground; cyan allowed here only). */
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      color-scheme: dark;
-      --bg: #000000; --surface: #121211; --field: #1B1B1A; --line: #2C2C2A; --line-strong: #FAF9F5;
-      --text: #FAF9F5; --muted: #A5A49D;
-      --link: #FF9100; --link-underline: #FF9100; --focus: #FF9100;
-      --mark-bg: #FAF9F5; --mark-text: #000000;
-      --t-testnet-bg: #08FFD0; --t-testnet-border: #08FFD0; --t-testnet-text: #000000;
-    }
-  }
-  :root[data-theme="dark"] {
-    color-scheme: dark;
-    --bg: #000000; --surface: #121211; --field: #1B1B1A; --line: #2C2C2A; --line-strong: #FAF9F5;
-    --text: #FAF9F5; --muted: #A5A49D;
-    --link: #FF9100; --link-underline: #FF9100; --focus: #FF9100;
-    --mark-bg: #FAF9F5; --mark-text: #000000;
-    --t-testnet-bg: #08FFD0; --t-testnet-border: #08FFD0; --t-testnet-text: #000000;
-  }
-
-  * { box-sizing: border-box; }
-  html, body { margin: 0; }
-  body { background: var(--bg); color: var(--text); font: 16px/1.5 var(--body); min-height: 100vh; }
-  a { color: var(--link); text-decoration: underline; text-decoration-color: var(--link-underline); text-decoration-thickness: 2px; text-underline-offset: 3px; }
-  a:hover { color: var(--orange); }
-  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
-  .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 20px 64px; }
-
-  .topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 36px; }
-  .logo { height: 26px; width: auto; color: var(--orange); display: block; }
-  .theme-btn { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--text); border: 1.5px solid var(--line-strong); border-radius: 999px; padding: 6px 14px; font: 13px var(--tag); text-transform: uppercase; letter-spacing: .04em; cursor: pointer; }
-  .theme-btn:hover { background: var(--text); color: var(--bg); }
-  .theme-btn svg { width: 14px; height: 14px; }
-
-  header .eyebrow { font: 14px var(--body); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  header .eyebrow mark { background: var(--mark-bg); color: var(--mark-text); padding: 1px 6px; }
-  header h1 { font: 400 clamp(40px, 7vw, 76px)/1 var(--display); letter-spacing: -.02em; margin: 14px 0 16px; text-wrap: balance; }
-  header h1 span { color: var(--orange); }
-  header p { color: var(--muted); margin: 0; max-width: 64ch; }
-  .source { margin-top: 16px; font: 13px var(--tag); text-transform: uppercase; letter-spacing: .04em; color: var(--muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .source a { color: inherit; }
-  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--muted); flex: none; }
-  .dot.live { background: var(--green); }
-  .dot.loading { background: var(--orange); animation: pulse 1s infinite alternate; }
-  @keyframes pulse { to { opacity: .3; } }
-  @media (prefers-reduced-motion: reduce) { .dot.loading { animation: none; } }
-
-  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 32px 0 20px; }
-  .stat { background: var(--surface); border: 2px solid transparent; border-radius: 14px; padding: 14px 16px 12px; cursor: pointer; text-align: left; color: inherit; font: inherit; transition: border-color .15s; }
-  .stat:hover { border-color: var(--line); }
-  .stat.on { border-color: var(--orange); }
-  .stat b { display: block; font: 400 36px/1.05 var(--display); font-variant-numeric: tabular-nums; }
-  .stat small { font: 13px var(--tag); color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
-
-  .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-  .search { flex: 1 1 280px; }
-  .search input { width: 100%; }
-  input, select { background: var(--field); color: var(--text); border: 1.5px solid var(--line); border-radius: 999px; padding: 9px 16px; font: 15px var(--body); outline: none; }
-  input:focus, select:focus { border-color: var(--orange); }
-  select { cursor: pointer; }
-  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
-  .chip { border: 1.5px solid var(--line); background: transparent; color: var(--muted); border-radius: 999px; padding: 4px 12px; font: 13px var(--tag); text-transform: uppercase; letter-spacing: .03em; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
-  .chip:hover { border-color: var(--muted); color: var(--text); }
-  .chip .n { opacity: .65; }
-  .chip.on { color: var(--text); border-color: var(--line-strong); }
-  .chip.on[data-tone="draft"] { background: var(--t-draft); border-color: var(--t-draft); color: var(--on-accent); }
-  .chip.on[data-tone="accepted"] { background: var(--t-accepted); border-color: var(--t-accepted); color: var(--on-accent); }
-  .chip.on[data-tone="adopted"] { background: var(--t-adopted); border-color: var(--t-adopted); color: var(--on-accent); }
-  .chip.on[data-tone="testnet"] { background: var(--t-testnet-bg); border-color: var(--t-testnet-border); color: var(--t-testnet-text); }
-  .chip.on[data-tone="closed"] { background: var(--text); border-color: var(--text); color: var(--bg); }
-  .btn-link { background: none; border: 0; color: var(--muted); font: 13px var(--tag); text-transform: uppercase; letter-spacing: .03em; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; padding: 4px; }
-  .btn-link:hover { color: var(--text); }
-
-  .meta-row { display: flex; justify-content: space-between; align-items: center; margin: 22px 2px 6px; font: 13px var(--tag); text-transform: uppercase; letter-spacing: .03em; color: var(--muted); gap: 10px; flex-wrap: wrap; }
-
-  table { width: 100%; border-collapse: collapse; }
-  thead th { text-align: left; font: 13px var(--tag); text-transform: uppercase; letter-spacing: .04em; color: var(--muted); padding: 10px; border-bottom: 1.5px solid var(--line-strong); cursor: pointer; user-select: none; white-space: nowrap; }
-  thead th:hover { color: var(--text); }
-  thead th.sorted { color: var(--text); }
-  thead th .arr { display: inline-block; width: 1em; color: var(--orange); }
-  tbody tr.row { cursor: pointer; border-bottom: 1px solid var(--line); }
-  tbody tr.row:hover { background: var(--surface); }
-  tbody td { padding: 13px 10px; vertical-align: top; font-size: 15px; }
-  td.num { font: 15px var(--tag); white-space: nowrap; }
-  td.title { font: 17px/1.3 var(--display); }
-  td.title .authors { display: block; font: 13px var(--body); color: var(--muted); margin-top: 4px; }
-  td.date { font: 14px var(--tag); color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
-  .badge { display: inline-block; font: 12px var(--tag); text-transform: uppercase; letter-spacing: .03em; padding: 3px 10px; border-radius: 999px; border: 1.5px solid var(--line); color: var(--muted); white-space: nowrap; }
-  .badge[data-tone="draft"] { background: var(--t-draft); border-color: var(--t-draft); color: var(--on-accent); }
-  .badge[data-tone="accepted"] { background: var(--t-accepted); border-color: var(--t-accepted); color: var(--on-accent); }
-  .badge[data-tone="adopted"] { background: var(--t-adopted); border-color: var(--t-adopted); color: var(--on-accent); }
-  .badge[data-tone="testnet"] { background: var(--t-testnet-bg); border-color: var(--t-testnet-border); color: var(--t-testnet-text); }
-  .tag { display: inline-block; font: 12px var(--tag); text-transform: uppercase; letter-spacing: .03em; color: var(--text); border: 1.5px solid var(--line); border-radius: 999px; padding: 1px 8px; margin: 0 4px 4px 0; }
-  .cxbar { display: inline-flex; gap: 3px; vertical-align: middle; }
-  .cxbar i { width: 8px; height: 14px; border-radius: 2px; background: var(--line); }
-  .cxbar i.f { background: var(--orange); }
-  tr.detail td { background: var(--surface); padding: 6px 18px 20px; border-bottom: 1px solid var(--line); }
-  tr.detail p { line-height: 1.6; margin: 10px 0 14px; max-width: 72ch; }
-  tr.detail a { font: 14px var(--tag); text-transform: uppercase; letter-spacing: .03em; }
-  .empty, .error { text-align: center; color: var(--muted); padding: 48px 12px; }
-  footer { margin-top: 44px; padding-top: 18px; border-top: 1.5px solid var(--line-strong); color: var(--muted); font-size: 13px; line-height: 1.7; display: grid; gap: 10px; }
-  .legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font: 13px var(--tag); text-transform: uppercase; letter-spacing: .03em; }
-  footer p { margin: 0; max-width: 72ch; }
-
-  [hidden] { display: none !important; }
-  .tabs { display: flex; gap: 6px; margin: 28px 0 0; border-bottom: 1.5px solid var(--line-strong); flex-wrap: wrap; }
-  .tab { background: transparent; border: 0; border-radius: 10px 10px 0 0; padding: 10px 16px; font: 14px var(--tag); text-transform: uppercase; letter-spacing: .04em; color: var(--muted); cursor: pointer; }
-  .tab:hover { color: var(--text); }
-  .tab[aria-selected="true"] { background: var(--mark-bg); color: var(--mark-text); }
-
-  .guide { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 48px; margin-top: 32px; }
-  .toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 20px); align-self: start; display: grid; gap: 2px; }
-  .toc-h { font: 13px var(--tag); text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-bottom: 8px; }
-  .toc button { text-align: left; background: none; border: 0; border-left: 2px solid var(--line); padding: 5px 0 5px 12px; font: 14px var(--body); color: var(--muted); cursor: pointer; }
-  .toc button:hover, .toc button.on { color: var(--text); border-left-color: var(--orange); }
-  .guide-body { max-width: 760px; display: grid; gap: 44px; }
-  .guide > *, .guide-body > section { min-width: 0; }
-  .guide-body > section { scroll-margin-top: 24px; }
-  .guide-lede { font-size: 18px; margin: 0; }
-  .guide h2 { font: 400 30px/1.1 var(--display); margin: 0 0 14px; letter-spacing: -.01em; }
-  .guide h3 { font: 400 19px/1.2 var(--display); margin: 22px 0 10px; }
-  .guide p { margin: 0 0 12px; max-width: 70ch; }
-  .guide .note { color: var(--muted); font-size: 14px; }
-  .guide code { font: 14px ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--surface); padding: 1px 5px; border-radius: 4px; }
-
-  .diagram { background: var(--surface); border-radius: 14px; padding: 18px; margin: 16px 0 6px; overflow-x: auto; }
-  .diagram svg { display: block; width: 100%; min-width: 620px; height: auto; }
-  .d-edges path { fill: none; stroke: var(--text); stroke-width: 2; }
-  .d-edges path.dash { stroke-dasharray: 6 5; }
-  .d-head { fill: var(--text); }
-  .n rect { fill: var(--bg); stroke: var(--line-strong); stroke-width: 1.5; }
-  .n text { fill: var(--text); font: 15px var(--tag); text-transform: uppercase; letter-spacing: .03em; text-anchor: middle; }
-  .n.draft rect { fill: var(--t-draft); stroke: var(--t-draft); }
-  .n.accepted rect { fill: var(--t-accepted); stroke: var(--t-accepted); }
-  .n.adopted rect { fill: var(--t-adopted); stroke: var(--t-adopted); }
-  .n.draft text, .n.accepted text, .n.adopted text { fill: var(--on-accent); }
-  .n.end rect { stroke-dasharray: 4 4; }
-
-  .defs { margin: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
-  .defs > div { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); }
-  .defs.wide > div { grid-template-columns: 190px minmax(0, 1fr); }
-  .defs dt { font: 16px/1.4 var(--display); }
-  .defs dd { margin: 0; }
-  .steps { margin: 0 0 16px; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 14px; }
-  .steps li { counter-increment: s; position: relative; padding-left: 46px; min-height: 30px; }
-  .steps li::before { content: counter(s); position: absolute; left: 0; top: -3px; width: 30px; height: 30px; border-radius: 50%; background: var(--mark-bg); color: var(--mark-text); font: 14px/30px var(--tag); text-align: center; }
-  .steps strong { font-family: var(--display); font-weight: 400; }
-  .label-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-  .label-grid > div { background: var(--surface); border-radius: 14px; padding: 16px 18px; }
-  .label-grid h3 { margin-top: 0; }
-  .label-grid p { font-size: 14px; color: var(--muted); }
-  .kv { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: 15px; }
-  .kv li { display: flex; align-items: center; gap: 10px; }
-  .kv .tag { margin: 0; min-width: 52px; text-align: center; }
-  .table-wrap { overflow-x: auto; margin: 4px 0 12px; }
-  table.fields { border-top: 1px solid var(--line); }
-  table.fields th { text-align: left; font: 16px var(--display); padding: 10px 16px 10px 0; border-bottom: 1px solid var(--line); white-space: nowrap; vertical-align: top; }
-  table.fields td { padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
-  .editors { list-style: none; margin: 0 0 16px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-  .editors a { display: inline-block; border: 1.5px solid var(--line); border-radius: 999px; padding: 6px 14px; text-decoration: none; font-size: 15px; }
-  .editors a:hover { border-color: var(--orange); color: var(--text); }
-
-  @media (max-width: 900px) {
-    .guide { grid-template-columns: minmax(0, 1fr); gap: 24px; }
-    .toc { position: static; grid-auto-flow: column; grid-auto-columns: max-content; overflow-x: auto; gap: 6px; padding-bottom: 4px; }
-    .toc-h { display: none; }
-    .toc button { border: 1.5px solid var(--line); border-radius: 999px; padding: 5px 12px; font-size: 13px; }
-    .label-grid { grid-template-columns: minmax(0, 1fr); }
-  }
-  @media (max-width: 560px) {
-    .defs > div, .defs.wide > div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
-    .guide h2 { font-size: 26px; }
-  }
-
-  @media (max-width: 760px) {
-    .wrap { padding: 20px 16px 48px; }
-    .topbar { margin-bottom: 26px; }
-    .stats { grid-template-columns: repeat(2, 1fr); }
-    .list thead { display: none; }
-    table.list, .list tbody, .list tr, .list td { display: block; width: 100%; }
-    tbody tr.row { padding: 12px 0; display: grid; grid-template-columns: auto 1fr auto; gap: 6px 10px; align-items: center; }
-    .list tbody td { padding: 0; }
-    td.num { grid-row: 1; grid-column: 1; }
-    td.date { grid-row: 1; grid-column: 2; }
-    td.status { grid-row: 1; grid-column: 3; }
-    td.title { grid-row: 2; grid-column: 1 / -1; }
-    td.purpose { grid-row: 3; grid-column: 1 / -1; }
-    td.layer, td.cx { display: none; }
-    .controls select { flex: 1 1 45%; }
-  }
-</style>
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('rskip-theme')==='dark'?'dark':'light'}catch(e){document.documentElement.dataset.theme='light'}</script>
+<link rel="preload" href="fonts/Rootstock-Sans-Headline.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Rootstock-Sans-Body.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Rootstock-Sans-Tags.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preconnect" href="https://api.github.com" crossorigin>
+<link rel="stylesheet" href="app.css">
+<script src="rskip.js" defer></script>
+<script type="module" src="app.js"></script>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <div class="wrap">
+<header>
   <div class="topbar">
-    <a href="https://rootstock.io" target="_blank" rel="noopener" aria-label="Rootstock website" style="text-decoration:none"><svg class="logo" role="img" aria-label="Rootstock" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 346.49"><g><g><g><path d="M259.26,246.68V102.43h60.41c10.7,0,19.84,1.65,27.24,4.96,7.39,3.31,13.03,7.88,16.83,13.72,3.79,5.84,5.64,12.65,5.64,20.43,0,6.03-1.07,11.38-3.31,16.24-2.24,4.86-5.54,8.85-10.02,12.16-4.47,3.31-9.82,5.54-16.24,6.81v1.26c4.86,1.17,8.95,3.11,12.26,5.84,3.31,2.72,6.03,6.03,8.17,9.82,2.24,3.89,4.18,8.56,5.93,14.2l12.35,38.71h-30.74l-10.89-34.43c-1.56-5.54-3.4-9.82-5.54-12.94-2.14-3.11-4.86-5.35-8.37-6.71-3.5-1.36-7.98-2.14-13.62-2.14h-20.04v56.13h-30.06v.19Zm55.25-79.37c5.06,0,9.44-.78,13.23-2.24,3.7-1.46,6.61-3.79,8.66-6.91,2.04-3.11,3.11-7,3.11-11.48s-1.07-8.37-3.11-11.38c-2.04-3.02-4.96-5.25-8.66-6.61-3.7-1.36-8.17-2.14-13.23-2.14h-25.19v40.85h25.19v-.1Z"/></g><g><path d="M438.05,249.12c-10.89,0-20.72-2.43-29.47-7.2-8.85-4.77-15.76-11.58-20.82-20.33-5.06-8.75-7.59-18.77-7.59-30.06s2.53-21.21,7.49-29.96c4.96-8.75,11.96-15.66,20.72-20.52,8.85-4.96,18.77-7.39,29.86-7.39s21.01,2.43,29.77,7.39c8.75,4.86,15.66,11.77,20.62,20.52,4.96,8.75,7.49,18.77,7.49,30.06s-2.53,21.21-7.59,29.96c-5.06,8.75-11.96,15.56-20.72,20.43-8.85,4.67-18.77,7.1-29.77,7.1Zm0-24.03c5.54,0,10.51-1.36,14.88-4.09,4.38-2.72,7.88-6.61,10.51-11.67,2.53-5.06,3.89-10.99,3.89-17.8s-1.26-12.65-3.79-17.8c-2.53-5.06-6.03-9.05-10.41-11.77-4.38-2.72-9.44-4.18-14.98-4.18s-10.51,1.36-14.88,4.18c-4.38,2.72-7.88,6.71-10.41,11.77-2.53,5.06-3.79,11.09-3.79,17.9s1.26,12.65,3.89,17.7c2.53,5.06,6.03,8.95,10.41,11.67,4.18,2.72,9.14,4.09,14.69,4.09Z"/></g><g><path d="M562.17,249.12c-10.89,0-20.72-2.43-29.47-7.2-8.85-4.77-15.76-11.58-20.82-20.33-5.06-8.75-7.59-18.77-7.59-30.06s2.53-21.21,7.49-29.96c4.96-8.75,11.96-15.66,20.72-20.52,8.85-4.96,18.77-7.39,29.86-7.39s21.01,2.43,29.77,7.39c8.75,4.86,15.66,11.77,20.62,20.52,4.96,8.75,7.49,18.77,7.49,30.06s-2.53,21.21-7.59,29.96c-5.06,8.75-11.96,15.56-20.72,20.43-8.85,4.67-18.77,7.1-29.77,7.1Zm0-24.03c5.54,0,10.51-1.36,14.88-4.09,4.38-2.72,7.88-6.61,10.51-11.67,2.53-5.06,3.89-10.99,3.89-17.8s-1.26-12.65-3.79-17.8c-2.53-5.06-6.03-9.05-10.41-11.77-4.38-2.72-9.44-4.18-14.98-4.18s-10.51,1.36-14.88,4.18c-4.38,2.72-7.88,6.71-10.41,11.77-2.53,5.06-3.79,11.09-3.79,17.9s1.26,12.65,3.89,17.7c2.53,5.06,6.03,8.95,10.41,11.67,4.18,2.72,9.14,4.09,14.69,4.09Z"/></g><g><path d="M679.57,248.44c-9.24,0-16.63-1.46-21.98-4.38-5.45-2.92-9.24-6.91-11.38-11.77-2.24-4.96-3.31-10.8-3.31-17.51v-56.32h-19.55v-22.66h19.55v-27.72h28.5v27.72h25.68v22.57h-25.68v54.86c0,3.79,1.17,6.71,3.5,8.75,2.33,2.04,6.13,3.02,11.38,3.02,3.31,0,6.81-.39,10.51-1.07v21.79c-5.35,1.85-11.09,2.72-17.22,2.72Z"/><path d="M751.17,249.21c-12.26,0-22.47-2.72-30.64-8.17-8.17-5.45-13.72-13.23-16.63-23.44l23.35-7.88c1.95,5.74,4.96,10.21,8.95,13.33,3.99,3.11,8.95,4.67,14.69,4.67s10.21-1.07,13.23-3.11c3.02-2.04,4.47-4.86,4.47-8.17,0-2.72-.68-4.96-2.04-6.52-1.36-1.65-3.7-3.02-6.91-4.28-3.21-1.17-7.88-2.43-13.81-3.79-9.34-2.04-16.73-4.38-22.08-7-5.35-2.63-9.34-5.93-11.87-10.12-2.53-4.18-3.89-9.34-3.89-15.76,0-7.1,1.85-13.23,5.45-18.58,3.6-5.35,8.75-9.44,15.56-12.45,6.81-2.92,14.59-4.38,23.44-4.38,7.78,0,14.69,1.07,20.72,3.31,6.03,2.24,10.89,5.54,14.79,9.92,3.89,4.38,6.61,9.73,8.07,15.95l-23.15,7.78c-1.65-4.86-4.28-8.66-7.68-11.48-3.5-2.72-7.68-4.18-12.55-4.18-3.4,0-6.32,.39-8.85,1.26-2.53,.88-4.47,2.14-5.84,3.79-1.36,1.65-2.04,3.6-2.04,5.84,0,2.53,.58,4.57,1.85,6.03,1.17,1.46,3.4,2.72,6.52,3.79,3.11,1.07,7.68,2.24,13.62,3.5,9.82,2.14,17.61,4.47,23.15,7.1,5.54,2.53,9.73,5.93,12.35,10.02,2.63,4.18,3.99,9.44,3.99,16.05,0,7.49-1.75,13.91-5.35,19.45-3.6,5.45-8.85,9.73-15.76,12.84-6.91,3.11-15.27,4.67-25.1,4.67Z"/></g><g><path d="M857.48,248.44c-9.24,0-16.63-1.46-21.98-4.38-5.45-2.92-9.24-6.91-11.38-11.77-2.24-4.96-3.31-10.8-3.31-17.51v-56.32h-19.55v-22.66h19.55v-27.72h28.5v27.72h25.68v22.57h-25.68v54.86c0,3.79,1.17,6.71,3.5,8.75,2.33,2.04,6.13,3.02,11.38,3.02,3.31,0,6.81-.39,10.51-1.07v21.79c-5.35,1.85-11.09,2.72-17.22,2.72Z"/></g><g><path d="M939.78,249.12c-10.89,0-20.72-2.43-29.47-7.2-8.85-4.77-15.76-11.58-20.82-20.33-5.06-8.75-7.59-18.77-7.59-30.06s2.53-21.21,7.49-29.96c4.96-8.75,11.96-15.66,20.72-20.52,8.85-4.96,18.77-7.39,29.86-7.39s21.01,2.43,29.77,7.39c8.75,4.86,15.66,11.77,20.62,20.52,4.96,8.75,7.49,18.77,7.49,30.06s-2.53,21.21-7.59,29.96c-5.06,8.75-11.96,15.56-20.72,20.43-8.85,4.67-18.68,7.1-29.77,7.1Zm0-24.03c5.54,0,10.51-1.36,14.88-4.09,4.38-2.72,7.88-6.61,10.51-11.67,2.53-5.06,3.89-10.99,3.89-17.8s-1.26-12.65-3.79-17.8c-2.53-5.06-6.03-9.05-10.41-11.77-4.38-2.72-9.44-4.18-14.98-4.18s-10.51,1.36-14.88,4.18c-4.38,2.72-7.88,6.71-10.41,11.77-2.53,5.06-3.79,11.09-3.79,17.9s1.26,12.65,3.89,17.7c2.53,5.06,6.03,8.95,10.41,11.67,4.28,2.72,9.14,4.09,14.69,4.09Z"/><path d="M1066.42,249.21c-10.31,0-19.84-2.14-28.6-6.52-8.85-4.38-15.86-10.89-21.21-19.55-5.35-8.66-7.98-19.07-7.98-31.13s2.53-22.28,7.68-31.13c5.16-8.85,12.06-15.56,20.82-20.33,8.75-4.77,18.48-7.1,29.08-7.1,8.75,0,16.63,1.65,23.64,4.96,7,3.31,12.94,7.78,17.61,13.52,4.67,5.74,8.07,12.26,10.02,19.55l-24.61,7.1c-1.17-4.09-3.02-7.68-5.35-10.8-2.33-3.11-5.25-5.64-8.66-7.49-3.4-1.85-7.39-2.72-11.77-2.72-5.84,0-11.09,1.46-15.66,4.28-4.57,2.82-8.17,6.81-10.7,11.96-2.53,5.16-3.89,11.09-3.89,17.7s1.36,12.84,4.09,17.9c2.72,5.06,6.42,8.95,10.99,11.58,4.57,2.63,9.53,3.99,14.98,3.99,4.38,0,8.27-.88,11.77-2.63,3.5-1.75,6.42-4.18,8.85-7.1,2.43-3.02,4.28-6.32,5.54-9.92l24.51,7.3c-1.75,6.52-4.86,12.55-9.34,18.19-4.47,5.54-10.31,10.02-17.51,13.42-7.1,3.21-15.17,4.96-24.32,4.96Z"/><path d="M1131.5,246.68V102.43h28.5v77.62l44.74-44.26h32.98l-47.66,46.11,47.37,64.78h-33.27l-34.34-47.47-9.92,9.34v38.13h-28.4Z"/></g><circle cx="130.57" cy="102.33" r="26.85"/><path d="M205.18,185.31c-12.84-7.39-29.28-3.02-36.67,9.82-2.53,4.38-3.7,9.24-3.6,14.01h0c.29,11.87-10.41,18-20.52,11.87-.39-.19-.78-.49-1.26-.68-10.21-5.74-10.21-17.9,0-23.54,8.37-4.57,14.1-13.42,14.1-23.64v-.58h0c-.29-11.87,10.41-18,20.52-11.87h0c8.07,4.96,18.58,5.35,27.33,.29,12.84-7.39,17.22-23.83,9.82-36.67-7.39-12.84-23.83-17.22-36.67-9.82-8.75,5.06-13.62,14.4-13.42,23.83h0c.29,11.87-10.41,18-20.43,11.87-4.09-2.53-8.85-3.99-14.01-3.99s-9.92,1.46-14.01,3.89c-10.12,6.03-20.72-.1-20.43-11.87h0c.19-9.53-4.67-18.77-13.42-23.83-12.84-7.39-29.28-2.92-36.67,9.92-7.39,12.84-2.92,29.28,9.92,36.67,8.75,5.06,19.26,4.57,27.33-.29h0c10.12-6.13,20.72,0,20.43,11.87h0v.58c0,10.21,5.64,19.07,14.1,23.64,10.21,5.74,10.21,17.9,0,23.54-.39,.19-.78,.49-1.17,.68-10.12,6.03-20.72-.1-20.43-11.87h0c.1-4.77-1.07-9.63-3.6-14.1-7.39-12.84-23.83-17.22-36.67-9.82-12.84,7.59-17.22,24.03-9.82,36.87,7.39,12.84,23.83,17.22,36.67,9.82,.19-.1,.29-.19,.49-.29h0c10.12-6.13,20.72,0,20.43,11.87h0v.68c0,14.79,12.06,26.85,26.85,26.85s26.85-12.06,26.85-26.85v-.58h0c-.29-11.87,10.41-18,20.52-11.87h0c.19,.1,.39,.19,.58,.39,12.84,7.39,29.28,3.02,36.67-9.82,7.39-13.13,3.02-29.57-9.82-36.96h0Z"/></g></g></svg></a>
-    <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch colour theme"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg><span id="themeLabel">Dark mode</span></button>
+    <a href="https://rootstock.io" target="_blank" rel="noopener noreferrer" class="logo-link" aria-label="Rootstock website"><svg class="logo" aria-hidden="true" focusable="false" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 346.49"><g><g><g><path d="M259.26,246.68V102.43h60.41c10.7,0,19.84,1.65,27.24,4.96,7.39,3.31,13.03,7.88,16.83,13.72,3.79,5.84,5.64,12.65,5.64,20.43,0,6.03-1.07,11.38-3.31,16.24-2.24,4.86-5.54,8.85-10.02,12.16-4.47,3.31-9.82,5.54-16.24,6.81v1.26c4.86,1.17,8.95,3.11,12.26,5.84,3.31,2.72,6.03,6.03,8.17,9.82,2.24,3.89,4.18,8.56,5.93,14.2l12.35,38.71h-30.74l-10.89-34.43c-1.56-5.54-3.4-9.82-5.54-12.94-2.14-3.11-4.86-5.35-8.37-6.71-3.5-1.36-7.98-2.14-13.62-2.14h-20.04v56.13h-30.06v.19Zm55.25-79.37c5.06,0,9.44-.78,13.23-2.24,3.7-1.46,6.61-3.79,8.66-6.91,2.04-3.11,3.11-7,3.11-11.48s-1.07-8.37-3.11-11.38c-2.04-3.02-4.96-5.25-8.66-6.61-3.7-1.36-8.17-2.14-13.23-2.14h-25.19v40.85h25.19v-.1Z"/></g><g><path d="M438.05,249.12c-10.89,0-20.72-2.43-29.47-7.2-8.85-4.77-15.76-11.58-20.82-20.33-5.06-8.75-7.59-18.77-7.59-30.06s2.53-21.21,7.49-29.96c4.96-8.75,11.96-15.66,20.72-20.52,8.85-4.96,18.77-7.39,29.86-7.39s21.01,2.43,29.77,7.39c8.75,4.86,15.66,11.77,20.62,20.52,4.96,8.75,7.49,18.77,7.49,30.06s-2.53,21.21-7.59,29.96c-5.06,8.75-11.96,15.56-20.72,20.43-8.85,4.67-18.77,7.1-29.77,7.1Zm0-24.03c5.54,0,10.51-1.36,14.88-4.09,4.38-2.72,7.88-6.61,10.51-11.67,2.53-5.06,3.89-10.99,3.89-17.8s-1.26-12.65-3.79-17.8c-2.53-5.06-6.03-9.05-10.41-11.77-4.38-2.72-9.44-4.18-14.98-4.18s-10.51,1.36-14.88,4.18c-4.38,2.72-7.88,6.71-10.41,11.77-2.53,5.06-3.79,11.09-3.79,17.9s1.26,12.65,3.89,17.7c2.53,5.06,6.03,8.95,10.41,11.67,4.18,2.72,9.14,4.09,14.69,4.09Z"/></g><g><path d="M562.17,249.12c-10.89,0-20.72-2.43-29.47-7.2-8.85-4.77-15.76-11.58-20.82-20.33-5.06-8.75-7.59-18.77-7.59-30.06s2.53-21.21,7.49-29.96c4.96-8.75,11.96-15.66,20.72-20.52,8.85-4.96,18.77-7.39,29.86-7.39s21.01,2.43,29.77,7.39c8.75,4.86,15.66,11.77,20.62,20.52,4.96,8.75,7.49,18.77,7.49,30.06s-2.53,21.21-7.59,29.96c-5.06,8.75-11.96,15.56-20.72,20.43-8.85,4.67-18.77,7.1-29.77,7.1Zm0-24.03c5.54,0,10.51-1.36,14.88-4.09,4.38-2.72,7.88-6.61,10.51-11.67,2.53-5.06,3.89-10.99,3.89-17.8s-1.26-12.65-3.79-17.8c-2.53-5.06-6.03-9.05-10.41-11.77-4.38-2.72-9.44-4.18-14.98-4.18s-10.51,1.36-14.88,4.18c-4.38,2.72-7.88,6.71-10.41,11.77-2.53,5.06-3.79,11.09-3.79,17.9s1.26,12.65,3.89,17.7c2.53,5.06,6.03,8.95,10.41,11.67,4.18,2.72,9.14,4.09,14.69,4.09Z"/></g><g><path d="M679.57,248.44c-9.24,0-16.63-1.46-21.98-4.38-5.45-2.92-9.24-6.91-11.38-11.77-2.24-4.96-3.31-10.8-3.31-17.51v-56.32h-19.55v-22.66h19.55v-27.72h28.5v27.72h25.68v22.57h-25.68v54.86c0,3.79,1.17,6.71,3.5,8.75,2.33,2.04,6.13,3.02,11.38,3.02,3.31,0,6.81-.39,10.51-1.07v21.79c-5.35,1.85-11.09,2.72-17.22,2.72Z"/><path d="M751.17,249.21c-12.26,0-22.47-2.72-30.64-8.17-8.17-5.45-13.72-13.23-16.63-23.44l23.35-7.88c1.95,5.74,4.96,10.21,8.95,13.33,3.99,3.11,8.95,4.67,14.69,4.67s10.21-1.07,13.23-3.11c3.02-2.04,4.47-4.86,4.47-8.17,0-2.72-.68-4.96-2.04-6.52-1.36-1.65-3.7-3.02-6.91-4.28-3.21-1.17-7.88-2.43-13.81-3.79-9.34-2.04-16.73-4.38-22.08-7-5.35-2.63-9.34-5.93-11.87-10.12-2.53-4.18-3.89-9.34-3.89-15.76,0-7.1,1.85-13.23,5.45-18.58,3.6-5.35,8.75-9.44,15.56-12.45,6.81-2.92,14.59-4.38,23.44-4.38,7.78,0,14.69,1.07,20.72,3.31,6.03,2.24,10.89,5.54,14.79,9.92,3.89,4.38,6.61,9.73,8.07,15.95l-23.15,7.78c-1.65-4.86-4.28-8.66-7.68-11.48-3.5-2.72-7.68-4.18-12.55-4.18-3.4,0-6.32,.39-8.85,1.26-2.53,.88-4.47,2.14-5.84,3.79-1.36,1.65-2.04,3.6-2.04,5.84,0,2.53,.58,4.57,1.85,6.03,1.17,1.46,3.4,2.72,6.52,3.79,3.11,1.07,7.68,2.24,13.62,3.5,9.82,2.14,17.61,4.47,23.15,7.1,5.54,2.53,9.73,5.93,12.35,10.02,2.63,4.18,3.99,9.44,3.99,16.05,0,7.49-1.75,13.91-5.35,19.45-3.6,5.45-8.85,9.73-15.76,12.84-6.91,3.11-15.27,4.67-25.1,4.67Z"/></g><g><path d="M857.48,248.44c-9.24,0-16.63-1.46-21.98-4.38-5.45-2.92-9.24-6.91-11.38-11.77-2.24-4.96-3.31-10.8-3.31-17.51v-56.32h-19.55v-22.66h19.55v-27.72h28.5v27.72h25.68v22.57h-25.68v54.86c0,3.79,1.17,6.71,3.5,8.75,2.33,2.04,6.13,3.02,11.38,3.02,3.31,0,6.81-.39,10.51-1.07v21.79c-5.35,1.85-11.09,2.72-17.22,2.72Z"/></g><g><path d="M939.78,249.12c-10.89,0-20.72-2.43-29.47-7.2-8.85-4.77-15.76-11.58-20.82-20.33-5.06-8.75-7.59-18.77-7.59-30.06s2.53-21.21,7.49-29.96c4.96-8.75,11.96-15.66,20.72-20.52,8.85-4.96,18.77-7.39,29.86-7.39s21.01,2.43,29.77,7.39c8.75,4.86,15.66,11.77,20.62,20.52,4.96,8.75,7.49,18.77,7.49,30.06s-2.53,21.21-7.59,29.96c-5.06,8.75-11.96,15.56-20.72,20.43-8.85,4.67-18.68,7.1-29.77,7.1Zm0-24.03c5.54,0,10.51-1.36,14.88-4.09,4.38-2.72,7.88-6.61,10.51-11.67,2.53-5.06,3.89-10.99,3.89-17.8s-1.26-12.65-3.79-17.8c-2.53-5.06-6.03-9.05-10.41-11.77-4.38-2.72-9.44-4.18-14.98-4.18s-10.51,1.36-14.88,4.18c-4.38,2.72-7.88,6.71-10.41,11.77-2.53,5.06-3.79,11.09-3.79,17.9s1.26,12.65,3.89,17.7c2.53,5.06,6.03,8.95,10.41,11.67,4.28,2.72,9.14,4.09,14.69,4.09Z"/><path d="M1066.42,249.21c-10.31,0-19.84-2.14-28.6-6.52-8.85-4.38-15.86-10.89-21.21-19.55-5.35-8.66-7.98-19.07-7.98-31.13s2.53-22.28,7.68-31.13c5.16-8.85,12.06-15.56,20.82-20.33,8.75-4.77,18.48-7.1,29.08-7.1,8.75,0,16.63,1.65,23.64,4.96,7,3.31,12.94,7.78,17.61,13.52,4.67,5.74,8.07,12.26,10.02,19.55l-24.61,7.1c-1.17-4.09-3.02-7.68-5.35-10.8-2.33-3.11-5.25-5.64-8.66-7.49-3.4-1.85-7.39-2.72-11.77-2.72-5.84,0-11.09,1.46-15.66,4.28-4.57,2.82-8.17,6.81-10.7,11.96-2.53,5.16-3.89,11.09-3.89,17.7s1.36,12.84,4.09,17.9c2.72,5.06,6.42,8.95,10.99,11.58,4.57,2.63,9.53,3.99,14.98,3.99,4.38,0,8.27-.88,11.77-2.63,3.5-1.75,6.42-4.18,8.85-7.1,2.43-3.02,4.28-6.32,5.54-9.92l24.51,7.3c-1.75,6.52-4.86,12.55-9.34,18.19-4.47,5.54-10.31,10.02-17.51,13.42-7.1,3.21-15.17,4.96-24.32,4.96Z"/><path d="M1131.5,246.68V102.43h28.5v77.62l44.74-44.26h32.98l-47.66,46.11,47.37,64.78h-33.27l-34.34-47.47-9.92,9.34v38.13h-28.4Z"/></g><circle cx="130.57" cy="102.33" r="26.85"/><path d="M205.18,185.31c-12.84-7.39-29.28-3.02-36.67,9.82-2.53,4.38-3.7,9.24-3.6,14.01h0c.29,11.87-10.41,18-20.52,11.87-.39-.19-.78-.49-1.26-.68-10.21-5.74-10.21-17.9,0-23.54,8.37-4.57,14.1-13.42,14.1-23.64v-.58h0c-.29-11.87,10.41-18,20.52-11.87h0c8.07,4.96,18.58,5.35,27.33,.29,12.84-7.39,17.22-23.83,9.82-36.67-7.39-12.84-23.83-17.22-36.67-9.82-8.75,5.06-13.62,14.4-13.42,23.83h0c.29,11.87-10.41,18-20.43,11.87-4.09-2.53-8.85-3.99-14.01-3.99s-9.92,1.46-14.01,3.89c-10.12,6.03-20.72-.1-20.43-11.87h0c.19-9.53-4.67-18.77-13.42-23.83-12.84-7.39-29.28-2.92-36.67,9.92-7.39,12.84-2.92,29.28,9.92,36.67,8.75,5.06,19.26,4.57,27.33-.29h0c10.12-6.13,20.72,0,20.43,11.87h0v.58c0,10.21,5.64,19.07,14.1,23.64,10.21,5.74,10.21,17.9,0,23.54-.39,.19-.78,.49-1.17,.68-10.12,6.03-20.72-.1-20.43-11.87h0c.1-4.77-1.07-9.63-3.6-14.1-7.39-12.84-23.83-17.22-36.67-9.82-12.84,7.59-17.22,24.03-9.82,36.87,7.39,12.84,23.83,17.22,36.67,9.82,.19-.1,.29-.19,.49-.29h0c10.12-6.13,20.72,0,20.43,11.87h0v.68c0,14.79,12.06,26.85,26.85,26.85s26.85-12.06,26.85-26.85v-.58h0c-.29-11.87,10.41-18,20.52-11.87h0c.19,.1,.39,.19,.58,.39,12.84,7.39,29.28,3.02,36.67-9.82,7.39-13.13,3.02-29.57-9.82-36.96h0Z"/></g></g></svg></a>
+    <button class="theme-btn" id="themeBtn" type="button"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg><span id="themeLabel">Dark mode</span></button>
   </div>
-  <header>
+  <div class="hero">
     <div class="eyebrow">Rootstock <span aria-hidden="true">→</span> <mark>Improvement Proposals</mark></div>
     <h1>RSKIP <span>Explorer</span></h1>
-    <p>Every proposal to change Rootstock, in one place. See what's in draft, what's been accepted and what's already live. Got a view on one? Say it on <a href="https://github.com/rsksmart/RSKIPs" target="_blank" rel="noopener">GitHub</a> or the <a href="https://research.rsk.dev/" target="_blank" rel="noopener">Rootstock Research Forum</a>.</p>
-    <div class="source"><span class="dot loading" id="dot"></span><span id="sourceText">Loading proposals…</span></div>
-  </header>
+    <p>Every proposal to change Rootstock, in one place. See what's in draft, what's been accepted and what's already live. Got a view on one? Say it on <a href="https://github.com/rsksmart/RSKIPs" target="_blank" rel="noopener noreferrer">GitHub</a> or the <a href="https://research.rsk.dev/" target="_blank" rel="noopener noreferrer">Rootstock Research Forum</a>.</p>
+    <div class="source"><span class="dot loading" id="dot"></span><span id="sourceText" role="status">Loading proposals…</span></div>
+  </div>
+</header>
+
+<main id="main">
 
   <div class="tabs" role="tablist" aria-label="Views">
-    <button class="tab" role="tab" id="tabBtn-proposals" aria-controls="tab-proposals" aria-selected="true" data-tab="proposals">Proposals</button>
-    <button class="tab" role="tab" id="tabBtn-guide" aria-controls="tab-guide" aria-selected="false" data-tab="guide">How RSKIPs work</button>
+    <button type="button" class="tab" role="tab" id="tabBtn-proposals" aria-controls="tab-proposals" aria-selected="true" data-tab="proposals">Proposals</button>
+    <button type="button" class="tab" role="tab" id="tabBtn-guide" aria-controls="tab-guide" aria-selected="false" tabindex="-1" data-tab="guide">How RSKIPs work</button>
   </div>
 
   <div id="tab-proposals" role="tabpanel" aria-labelledby="tabBtn-proposals">
 
-  <section class="stats" id="stats"></section>
+  <div class="stats" id="stats" role="group" aria-label="Quick views">
+    <button type="button" class="stat" data-preset="upcoming" aria-pressed="false"><b>–</b><small>Upcoming</small></button>
+    <button type="button" class="stat" data-preset="adopted" aria-pressed="false"><b>–</b><small>Adopted</small></button>
+    <button type="button" class="stat" data-preset="all" aria-pressed="false"><b>–</b><small>All RSKIPs</small></button>
+  </div>
 
-  <section class="controls">
-    <div class="search"><input id="q" type="search" placeholder="Search number, title, author, abstract…" aria-label="Search"></div>
+  <search class="controls">
+    <div class="search"><label for="q" class="sr-only">Search proposals</label><input id="q" type="search" placeholder="Search number, title, author, abstract…" autocomplete="off" spellcheck="false" maxlength="200" aria-keyshortcuts="/"></div>
     <select id="layer" aria-label="Category"><option value="">All categories</option></select>
     <select id="complexity" aria-label="Complexity"><option value="">Any complexity</option><option value="1">1 · Minimal</option><option value="2">2 · Medium</option><option value="3">3 · High</option></select>
     <select id="sortSel" aria-label="Sort">
+      <option value="custom" hidden>Sorted by column</option>
       <option value="created:desc">Newest first</option>
       <option value="created:asc">Oldest first</option>
       <option value="num:desc">Number ↓</option>
@@ -252,41 +67,44 @@
       <option value="status:asc">Status</option>
       <option value="complexity:desc">Complexity ↓</option>
     </select>
-  </section>
-  <div class="chips" id="statusChips"></div>
+  </search>
+  <div class="chips" id="statusChips" role="group" aria-label="Filter by status"></div>
 
-  <div class="meta-row"><span id="count"></span><span><button class="btn-link" id="expandAll">Expand all</button> <button class="btn-link" id="reset">Reset filters</button></span></div>
+  <div class="meta-row"><span id="count" role="status" aria-live="polite"></span><span><button type="button" class="btn-link" id="expandAll">Expand all</button> <button type="button" class="btn-link" id="reset">Reset filters</button></span></div>
 
+  <div class="rows-wrap">
   <table class="list">
+    <caption class="sr-only">Rootstock Improvement Proposals. Column headers sort the table. Select a title to show its abstract.</caption>
     <thead><tr>
-      <th data-k="num">RSKIP<span class="arr"></span></th>
-      <th data-k="title">Title<span class="arr"></span></th>
-      <th data-k="status">Status<span class="arr"></span></th>
-      <th data-k="purpose">Purpose<span class="arr"></span></th>
-      <th data-k="layer">Layer<span class="arr"></span></th>
-      <th data-k="complexity">Cx<span class="arr"></span></th>
-      <th data-k="created">Created<span class="arr"></span></th>
+      <th scope="col" data-k="num"><button type="button" class="sort-btn">RSKIP<span class="arr" aria-hidden="true"></span></button></th>
+      <th scope="col" data-k="title"><button type="button" class="sort-btn">Title<span class="arr" aria-hidden="true"></span></button></th>
+      <th scope="col" data-k="status"><button type="button" class="sort-btn">Status<span class="arr" aria-hidden="true"></span></button></th>
+      <th scope="col" data-k="purpose"><button type="button" class="sort-btn">Purpose<span class="arr" aria-hidden="true"></span></button></th>
+      <th scope="col" data-k="layer"><button type="button" class="sort-btn">Layer<span class="arr" aria-hidden="true"></span></button></th>
+      <th scope="col" data-k="complexity"><button type="button" class="sort-btn"><span class="th-long">Complexity</span><span class="th-short">Cx<span class="sr-only"> (complexity)</span></span><span class="arr" aria-hidden="true"></span></button></th>
+      <th scope="col" data-k="created"><button type="button" class="sort-btn">Created<span class="arr" aria-hidden="true"></span></button></th>
     </tr></thead>
     <tbody id="rows"></tbody>
   </table>
   </div>
+  </div>
 
-  <section id="tab-guide" class="guide" hidden aria-labelledby="tabBtn-guide">
-    <nav class="toc" aria-label="On this page">
+  <section id="tab-guide" class="guide" role="tabpanel" hidden aria-labelledby="tabBtn-guide">
+    <nav class="toc" id="toc" aria-label="On this page">
       <span class="toc-h">On this page</span>
-      <button type="button" data-goto="g-what">What an RSKIP is</button>
-      <button type="button" data-goto="g-life">Lifecycle</button>
-      <button type="button" data-goto="g-submit">Submitting one</button>
-      <button type="button" data-goto="g-types">Types</button>
-      <button type="button" data-goto="g-labels">Labels on this site</button>
-      <button type="button" data-goto="g-parts">What to include</button>
-      <button type="button" data-goto="g-header">Header fields</button>
-      <button type="button" data-goto="g-owner">Files and ownership</button>
-      <button type="button" data-goto="g-editors">Editors</button>
+      <a href="#g-what">What an RSKIP is</a>
+      <a href="#g-life">Lifecycle</a>
+      <a href="#g-submit">Submitting one</a>
+      <a href="#g-types">Types</a>
+      <a href="#g-labels">Labels on this site</a>
+      <a href="#g-parts">What to include</a>
+      <a href="#g-header">Header fields</a>
+      <a href="#g-owner">Files and ownership</a>
+      <a href="#g-editors">Editors</a>
     </nav>
 
     <div class="guide-body">
-      <p class="guide-lede">How changes to Rootstock (RSK) are proposed, reviewed and adopted. Summarised from <a href="https://github.com/rsksmart/RSKIPs/blob/master/IPs/RSKIP0.md" target="_blank" rel="noopener">RSKIP-0: Purpose and Guidelines</a>, which has the full text.</p>
+      <p class="guide-lede">How changes to Rootstock (RSK) are proposed, reviewed and adopted.</p>
 
       <section id="g-what">
         <h2>What an RSKIP is</h2>
@@ -340,16 +158,16 @@
           <div><dt><span class="badge">Withdrawn</span></dt><dd>Withdrawn by its authors. This is final: the number can't be reused, and picking the idea up later means a new proposal.</dd></div>
           <div><dt><span class="badge">Superseded</span></dt><dd>Made obsolete by a later RSKIP.</dd></div>
         </dl>
-        <p class="note">Status definitions come from the <a href="https://github.com/rsksmart/RSKIPs#rskip-status-terms" target="_blank" rel="noopener">RSKIPs README</a>. The diagram is from RSKIP-0, which calls Superseded "Replaced".</p>
+        <p class="note">Status definitions come from the <a href="https://github.com/rsksmart/RSKIPs#rskip-status-terms" target="_blank" rel="noopener noreferrer">RSKIPs README</a>. The diagram is from RSKIP-0, which calls Superseded "Replaced".</p>
       </section>
 
       <section id="g-submit">
         <h2>Submitting one</h2>
         <ol class="steps">
-          <li><strong>Test the idea in public first.</strong> Ask whether it's original and whether it has a chance, before spending time writing it up. Start a thread on the <a href="https://research.rsk.dev/c/rskip/13" target="_blank" rel="noopener">Rootstock Research Forum</a> or open an <a href="https://github.com/rsksmart/RSKIPs/issues" target="_blank" rel="noopener">issue on GitHub</a>, and tag the RSKIP editors.</li>
+          <li><strong>Test the idea in public first.</strong> Ask whether it's original and whether it has a chance, before spending time writing it up. Start a thread on the <a href="https://research.rsk.dev/c/rskip/13" target="_blank" rel="noopener noreferrer">Rootstock Research Forum</a> or open an <a href="https://github.com/rsksmart/RSKIPs/issues" target="_blank" rel="noopener noreferrer">issue on GitHub</a>, and tag the RSKIP editors.</li>
           <li><strong>Keep it focused.</strong> One key proposal per RSKIP works best. A change to a single client doesn't need an RSKIP, but a change that affects several clients or sets a standard for apps does. If in doubt, split it up.</li>
           <li><strong>Find a champion.</strong> Every RSKIP needs someone to write it, lead the discussion and build consensus around it.</li>
-          <li><strong>Open a draft as a <a href="https://github.com/rsksmart/RSKIPs/pulls" target="_blank" rel="noopener">pull request</a>.</strong> Use the <a href="https://github.com/rsksmart/RSKIPs/blob/master/IPs/RSKIP0_TEMPLATE.md" target="_blank" rel="noopener">template</a>, in Markdown. This lets you keep editing while people comment.</li>
+          <li><strong>Open a draft as a <a href="https://github.com/rsksmart/RSKIPs/pulls" target="_blank" rel="noopener noreferrer">pull request</a>.</strong> Use the <a href="https://github.com/rsksmart/RSKIPs/blob/master/IPs/RSKIP0_TEMPLATE.md" target="_blank" rel="noopener noreferrer">template</a>, in Markdown. This lets you keep editing while people comment.</li>
           <li><strong>Get a number.</strong> If the editors approve, the PR number becomes the RSKIP number. It's labelled Standards Track, Informational or Process and set to Draft, and the editors add its complexity and purpose. They won't refuse without a reason, such as duplicate work, technical problems, weak motivation or backward-compatibility issues.</li>
           <li><strong>Implement it.</strong> A Standards Track RSKIP must include an implementation (code, a patch or a link to one) before it can be Accepted or Fork Pending.</li>
           <li><strong>Get accepted.</strong> It needs to be a clear, complete description of a net improvement, and the implementation mustn't complicate the protocol unduly. Once the implementation is done and accepted, the status moves to Fork Pending if a fork is needed, or Active if not.</li>
@@ -451,11 +269,11 @@
       <section id="g-editors">
         <h2>Editors</h2>
         <ul class="editors">
-          <li><a href="https://github.com/sergioLerner" target="_blank" rel="noopener">Sergio Lerner</a></li>
-          <li><a href="https://github.com/julianlen" target="_blank" rel="noopener">Julian Len</a></li>
-          <li><a href="https://github.com/smishraIOV" target="_blank" rel="noopener">Shreemoy Mishra</a></li>
-          <li><a href="https://github.com/javicid" target="_blank" rel="noopener">Javier Alvarez Cid-Fuentes</a></li>
-          <li><a href="https://github.com/raullaprida" target="_blank" rel="noopener">Raul Laprida</a></li>
+          <li><a href="https://github.com/sergioLerner" target="_blank" rel="noopener noreferrer">Sergio Lerner</a></li>
+          <li><a href="https://github.com/julianlen" target="_blank" rel="noopener noreferrer">Julian Len</a></li>
+          <li><a href="https://github.com/smishraIOV" target="_blank" rel="noopener noreferrer">Shreemoy Mishra</a></li>
+          <li><a href="https://github.com/javicid" target="_blank" rel="noopener noreferrer">Javier Alvarez Cid-Fuentes</a></li>
+          <li><a href="https://github.com/raullaprida" target="_blank" rel="noopener noreferrer">Raul Laprida</a></li>
         </ul>
         <p>Editors don't judge proposals. They handle the admin: checking each RSKIP is sound and complete, that the title fits and that the language and formatting are clean. If it isn't ready, they send it back with specific instructions. When it is, they add it to the repo, list it in the README and tell the author the next step.</p>
         <p class="note">RSKIP-0 is based on Ethereum's EIP-1 and Bitcoin's BIP-0001, which came from Python's PEP-0001. It's published under CC0.</p>
@@ -463,248 +281,17 @@
     </div>
   </section>
 
+</main>
+
+  <noscript><p class="noscript">This page needs JavaScript to load the proposals. You can browse them on <a href="https://github.com/rsksmart/RSKIPs">GitHub</a>.</p></noscript>
+
   <footer>
     <div class="legend">
-      Purposes: <a href="https://ips.rootstock.io/scalability.html" target="_blank" rel="noopener">Scalability</a><a href="https://ips.rootstock.io/security.html" target="_blank" rel="noopener">Security</a><a href="https://ips.rootstock.io/usability.html" target="_blank" rel="noopener">Usability</a><a href="https://ips.rootstock.io/fairness.html" target="_blank" rel="noopener">Fairness</a><a href="https://ips.rootstock.io/standardtrack.html" target="_blank" rel="noopener">Standard Track</a>
+      Purposes: <a href="https://ips.rootstock.io/scalability.html" target="_blank" rel="noopener noreferrer">Scalability</a><a href="https://ips.rootstock.io/security.html" target="_blank" rel="noopener noreferrer">Security</a><a href="https://ips.rootstock.io/usability.html" target="_blank" rel="noopener noreferrer">Usability</a><a href="https://ips.rootstock.io/fairness.html" target="_blank" rel="noopener noreferrer">Fairness</a><a href="https://ips.rootstock.io/standardtrack.html" target="_blank" rel="noopener noreferrer">Standard Track</a>
     </div>
-    <p>“Upcoming” = Draft + Accepted. Data is read directly from <a href="https://github.com/rsksmart/RSKIPs">rsksmart/RSKIPs</a> each time the page loads; a bundled snapshot is used if GitHub can't be reached. Unofficial explorer, not maintained by the RSKIP authors.</p>
+    <p>“Upcoming” = Draft. “Adopted” includes Accepted and Active. Data comes from <a href="https://github.com/rsksmart/RSKIPs" target="_blank" rel="noopener noreferrer">rsksmart/RSKIPs</a>. The page opens with a daily snapshot, then checks GitHub and pulls in anything that changed. Unofficial explorer, not maintained by the RSKIP authors.</p>
   </footer>
 </div>
 
-<script src="rskip.js"></script>
-<script>
-(() => {
-  const REPO = 'rsksmart/RSKIPs', BRANCH = 'master';
-  const RAW = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/`;
-  const STATUS_ORDER = ['Draft', 'Accepted', 'Testnet', 'Adopted', 'Deferred', 'Rejected', 'Withdrawn', 'Superseded', 'Unknown'];
-  const PURPOSE_NAME = { Sca: 'Scalability', Usa: 'Usability', Sec: 'Security', Fair: 'Fairness', ST: 'Standard Track' };
-  const TONE = { Draft: 'draft', Accepted: 'accepted', Testnet: 'testnet', Adopted: 'adopted' };
-  const tone = (s) => TONE[s] || 'closed';
-  const UPCOMING = ['Draft', 'Accepted'];
-  const $ = (id) => document.getElementById(id);
-  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-
-  let items = [];
-  const open = new Set();
-  const state = { q: '', statuses: new Set(UPCOMING), purpose: '', layer: '', complexity: '', sort: 'created', dir: 'desc' };
-
-  // --- URL state -----------------------------------------------------------
-  function readUrl() {
-    const p = new URLSearchParams(location.search);
-    if (p.has('status')) state.statuses = new Set(p.get('status') ? p.get('status').split(',') : []);
-    ['q', 'layer', 'complexity'].forEach((k) => { if (p.has(k)) state[k] = p.get(k); });
-    if (p.has('sort')) { const [k, d] = p.get('sort').split(':'); state.sort = k; state.dir = d || 'asc'; }
-  }
-  function writeUrl() {
-    const p = new URLSearchParams();
-    const st = [...state.statuses].join(',');
-    if (st !== UPCOMING.join(',')) p.set('status', st);
-    ['q', 'layer', 'complexity'].forEach((k) => state[k] && p.set(k, state[k]));
-    if (`${state.sort}:${state.dir}` !== 'created:desc') p.set('sort', `${state.sort}:${state.dir}`);
-    const s = p.toString();
-    history.replaceState(null, '', (s ? `?${s}` : location.pathname) + location.hash);
-  }
-
-  // --- Data loading --------------------------------------------------------
-  async function loadSnapshot() {
-    const r = await fetch('data.json', { cache: 'no-cache' });
-    if (!r.ok) throw new Error('snapshot missing');
-    return r.json();
-  }
-  async function loadLive(knownPaths) {
-    // File list from the GitHub API; if it's rate-limited, re-read the known files from raw.githubusercontent.com.
-    let paths;
-    try {
-      const r = await fetch(`https://api.github.com/repos/${REPO}/git/trees/${BRANCH}?recursive=1`);
-      if (!r.ok) throw new Error(`GitHub API ${r.status}`);
-      paths = (await r.json()).tree.map((t) => t.path).filter(RSKIP.isRskipFile);
-    } catch (e) {
-      if (!knownPaths.length) throw e;
-      paths = knownPaths;
-    }
-    const readme = await fetch(RAW + 'README.md').then((r) => r.text()).catch(() => '');
-    const names = RSKIP.parseAuthorIndex(readme);
-    const out = [];
-    let i = 0, done = 0;
-    async function worker() {
-      while (i < paths.length) {
-        const p = paths[i++];
-        try {
-          const txt = await fetch(RAW + p).then((r) => { if (!r.ok) throw 0; return r.text(); });
-          out.push(RSKIP.parseRskip(p, txt, names));
-        } catch (e) { /* skip unreadable file */ }
-        if (++done % 25 === 0) setSource('loading', `Refreshing from GitHub… ${done}/${paths.length}`);
-      }
-    }
-    await Promise.all(Array.from({ length: 16 }, worker));
-    if (out.length < paths.length * 0.9) throw new Error('too many files failed');
-    return out.sort((a, b) => a.num - b.num);
-  }
-  function setSource(kind, text) { $('dot').className = 'dot ' + kind; $('sourceText').innerHTML = text; }
-  const fmtDate = (iso) => new Date(iso).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
-
-  async function init() {
-    readUrl();
-    syncControls();
-    try {
-      const snap = await loadSnapshot();
-      items = snap.items; buildOptions(); render();
-      setSource('loading', `Showing snapshot from ${fmtDate(snap.generated)} · refreshing from GitHub…`);
-      var snapDate = snap.generated;
-    } catch (e) { /* no snapshot, wait for live */ }
-    try {
-      items = await loadLive(items.map((x) => x.path)); buildOptions(); render();
-      setSource('live', `Live from <a href="https://github.com/${REPO}">${REPO}</a> · loaded ${fmtDate(new Date())}`);
-    } catch (e) {
-      if (items.length) setSource('', `GitHub unavailable (${esc(e.message)}). Showing snapshot from ${fmtDate(snapDate)}.`);
-      else { setSource('', 'Could not load proposals.'); $('rows').innerHTML = `<tr><td colspan="7" class="error">Couldn't reach GitHub. Try again in a minute.</td></tr>`; }
-    }
-  }
-
-  // --- Filtering / sorting -------------------------------------------------
-  function matches(x, ignoreStatus) {
-    if (!ignoreStatus && !state.statuses.has(x.status)) return false;
-    if (state.layer && !x.layer.split(', ').includes(state.layer)) return false;
-    if (state.complexity && String(x.complexity) !== state.complexity) return false;
-    if (state.q) {
-      const q = state.q.toLowerCase().replace(/^rskip[-\s]*/, '');
-      const hay = `${x.num} ${x.title} ${x.authors.map((a) => a.name + ' ' + a.id).join(' ')} ${x.purpose.map((p) => PURPOSE_NAME[p]).join(' ')} ${x.abstract}`.toLowerCase();
-      if (!q.split(/\s+/).every((w) => hay.includes(w))) return false;
-    }
-    return true;
-  }
-  function cmp(a, b) {
-    const k = state.sort, d = state.dir === 'asc' ? 1 : -1;
-    let va = a[k], vb = b[k];
-    if (k === 'status') { va = STATUS_ORDER.indexOf(va); vb = STATUS_ORDER.indexOf(vb); }
-    if (k === 'purpose') { va = va.join(','); vb = vb.join(','); }
-    const emptyA = va === null || va === '' || va === '—', emptyB = vb === null || vb === '' || vb === '—';
-    if (emptyA !== emptyB) return emptyA ? 1 : -1; // blanks always last
-    if (va < vb) return -d; if (va > vb) return d;
-    return b.num - a.num;
-  }
-
-  // --- Rendering -----------------------------------------------------------
-  function buildOptions() {
-    const fill = (sel, vals, label) => {
-      const cur = state[sel];
-      $(sel).innerHTML = `<option value="">${label}</option>` + vals.map((v) => `<option ${v === cur ? 'selected' : ''}>${esc(v)}</option>`).join('');
-    };
-    fill('layer', [...new Set(items.flatMap((x) => x.layer.split(', ')))].filter((l) => l !== '—').sort(), 'All categories');
-  }
-  function syncControls() {
-    $('q').value = state.q; $('complexity').value = state.complexity;
-    const sv = `${state.sort}:${state.dir}`;
-    $('sortSel').value = [...$('sortSel').options].some((o) => o.value === sv) ? sv : '';
-  }
-
-  function render() {
-    // stats
-    const count = (f) => items.filter(f).length;
-    const presets = [
-      { key: 'upcoming', label: 'Upcoming', set: UPCOMING, n: count((x) => UPCOMING.includes(x.status)) },
-      { key: 'draft', label: 'Draft', set: ['Draft'], n: count((x) => x.status === 'Draft') },
-      { key: 'adopted', label: 'Adopted', set: ['Adopted', 'Testnet'], n: count((x) => x.status === 'Adopted' || x.status === 'Testnet') },
-      { key: 'all', label: 'All RSKIPs', set: STATUS_ORDER, n: items.length },
-    ];
-    const present = STATUS_ORDER.filter((s) => items.some((x) => x.status === s));
-    presets[3].set = present;
-    const norm = (set) => [...set].filter((s) => present.includes(s)).sort().join();
-    const cur = norm(state.statuses);
-    $('stats').innerHTML = presets.map((p) => `<button class="stat ${norm(p.set) === cur ? 'on' : ''}" data-preset="${p.key}"><b>${p.n}</b><small>${p.label}</small></button>`).join('');
-    $('stats').querySelectorAll('.stat').forEach((b) => b.onclick = () => { state.statuses = new Set(presets.find((p) => p.key === b.dataset.preset).set); update(); });
-
-    // status chips (counts respect the other filters)
-    const base = items.filter((x) => matches(x, true));
-    $('statusChips').innerHTML = present.map((s) => `<button class="chip ${state.statuses.has(s) ? 'on' : ''}" data-s="${esc(s)}" data-tone="${tone(s)}">${esc(s)} <span class="n">${base.filter((x) => x.status === s).length}</span></button>`).join('');
-    $('statusChips').querySelectorAll('.chip').forEach((c) => c.onclick = (e) => {
-      const s = c.dataset.s;
-      if (e.altKey || e.metaKey) state.statuses = new Set([s]);
-      else state.statuses.has(s) ? state.statuses.delete(s) : state.statuses.add(s);
-      update();
-    });
-
-    // headers
-    document.querySelectorAll('thead th').forEach((th) => {
-      const on = th.dataset.k === state.sort;
-      th.classList.toggle('sorted', on);
-      th.querySelector('.arr').textContent = on ? (state.dir === 'asc' ? ' ↑' : ' ↓') : '';
-    });
-
-    // rows
-    const list = base.filter((x) => state.statuses.has(x.status)).sort(cmp);
-    $('count').textContent = `${list.length} of ${items.length} proposals`;
-    if (!list.length) { $('rows').innerHTML = `<tr><td colspan="7" class="empty">No proposals match these filters.</td></tr>`; return; }
-    $('rows').innerHTML = list.map((x) => {
-      const url = `https://github.com/${REPO}/blob/${BRANCH}/${x.path}`;
-      const row = `<tr class="row" data-n="${x.num}">
-        <td class="num">#${x.num}</td>
-        <td class="title">${esc(x.title)}<span class="authors">${esc(x.authors.map((a) => a.name).join(', ') || 'Unknown author')}</span></td>
-        <td class="status"><span class="badge" data-tone="${tone(x.status)}">${esc(x.status)}</span></td>
-        <td class="purpose">${x.purpose.map((p) => `<span class="tag">${PURPOSE_NAME[p] || p}</span>`).join('') || '<span class="tag">—</span>'}</td>
-        <td class="layer"><span class="tag">${esc(x.layer)}</span></td>
-        <td class="cx" title="Complexity ${x.complexity ?? 'unknown'}">${x.complexity ? `<span class="cxbar">${[1, 2, 3].map((i) => `<i class="${i <= x.complexity ? 'f' : ''}"></i>`).join('')}</span>` : '—'}</td>
-        <td class="date">${esc(x.created || '—')}</td>
-      </tr>`;
-      const detail = open.has(x.num) ? `<tr class="detail"><td colspan="7"><p>${esc(x.abstract || 'No abstract found.')}</p><a href="${url}" target="_blank" rel="noopener">Read RSKIP-${x.num} on GitHub →</a></td></tr>` : '';
-      return row + detail;
-    }).join('');
-    $('rows').querySelectorAll('tr.row').forEach((tr) => tr.onclick = () => { const n = +tr.dataset.n; open.has(n) ? open.delete(n) : open.add(n); render(); });
-    $('expandAll').textContent = list.every((x) => open.has(x.num)) ? 'Collapse all' : 'Expand all';
-    $('expandAll').onclick = () => { const all = list.every((x) => open.has(x.num)); list.forEach((x) => all ? open.delete(x.num) : open.add(x.num)); render(); };
-  }
-  function update() { writeUrl(); syncControls(); render(); }
-
-  // --- Events --------------------------------------------------------------
-  let t; $('q').oninput = (e) => { clearTimeout(t); t = setTimeout(() => { state.q = e.target.value.trim(); update(); }, 120); };
-  ['layer', 'complexity'].forEach((k) => $(k).onchange = (e) => { state[k] = e.target.value; update(); });
-  $('sortSel').onchange = (e) => { const [k, d] = e.target.value.split(':'); state.sort = k; state.dir = d; update(); };
-  document.querySelectorAll('thead th').forEach((th) => th.onclick = () => {
-    const k = th.dataset.k;
-    if (state.sort === k) state.dir = state.dir === 'asc' ? 'desc' : 'asc';
-    else { state.sort = k; state.dir = ['created', 'complexity', 'num'].includes(k) ? 'desc' : 'asc'; }
-    update();
-  });
-  $('reset').onclick = () => { Object.assign(state, { q: '', statuses: new Set(UPCOMING), purpose: '', layer: '', complexity: '', sort: 'created', dir: 'desc' }); update(); };
-
-  // --- Tabs ----------------------------------------------------------------
-  function showTab(name) {
-    const guide = name === 'guide';
-    $('tab-proposals').hidden = guide; $('tab-guide').hidden = !guide;
-    $('tabBtn-proposals').setAttribute('aria-selected', String(!guide));
-    $('tabBtn-guide').setAttribute('aria-selected', String(guide));
-  }
-  document.querySelectorAll('.tab').forEach((b) => b.onclick = () => {
-    const name = b.dataset.tab;
-    try { history.replaceState(null, '', location.pathname + location.search + (name === 'guide' ? '#guide' : '')); } catch (e) {}
-    showTab(name); window.scrollTo({ top: 0 });
-  });
-  document.querySelectorAll('[role=tab]').forEach((b, i, all) => b.onkeydown = (e) => {
-    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-    const next = all[(i + (e.key === 'ArrowRight' ? 1 : all.length - 1)) % all.length]; next.focus(); next.click();
-  });
-  showTab(location.hash === '#guide' ? 'guide' : 'proposals');
-  document.querySelectorAll('.toc button').forEach((b) => b.onclick = () => {
-    document.getElementById(b.dataset.goto).scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
-  });
-  const tocObs = 'IntersectionObserver' in window && new IntersectionObserver((entries) => entries.forEach((en) => {
-    if (en.isIntersecting) document.querySelectorAll('.toc button').forEach((b) => b.classList.toggle('on', b.dataset.goto === en.target.id));
-  }), { rootMargin: '-10% 0px -70% 0px' });
-  if (tocObs) document.querySelectorAll('.guide-body > section').forEach((s) => tocObs.observe(s));
-
-  // --- Theme ---------------------------------------------------------------
-  const root = document.documentElement;
-  const darkNow = () => root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-  const paintThemeBtn = () => { $('themeLabel').textContent = darkNow() ? 'Light mode' : 'Dark mode'; };
-  let saved = null;
-  try { saved = localStorage.getItem('rskip-theme'); } catch (e) {}
-  root.dataset.theme = saved === 'dark' ? 'dark' : 'light'; // light by default; dark only if the viewer picked it
-  $('themeBtn').onclick = () => { const next = darkNow() ? 'light' : 'dark'; root.dataset.theme = next; try { localStorage.setItem('rskip-theme', next); } catch (e) {} paintThemeBtn(); };
-  matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', paintThemeBtn);
-  paintThemeBtn();
-
-  init();
-})();
-</script>
 </body>
 </html>
