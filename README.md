@@ -7,4 +7,6 @@ A small static site for reviewing and sorting Rootstock Improvement Proposals fr
 - Filters and sort are kept in the URL, so a filtered view can be shared as a link.
 - `data.json` is a bundled snapshot used only if GitHub can't be reached. Refresh it with `node build-snapshot.js /path/to/RSKIPs`.
 
+Styled with the [Rootstock brand system](https://github.com/rsksmart/rootstock-brand-system) (Rootstock Sans fonts, logo and palette, MIT licensed). Light mode uses the Published palette and dark mode the Editor palette; it follows the system setting, with a toggle in the top bar.
+
 Unofficial; not maintained by the RSKIP authors.
