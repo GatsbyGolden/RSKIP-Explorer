@@ -77,6 +77,7 @@
     let title = get('title') || h1.replace(/^RSKIP-?\s*\d+\s*[:\-–]\s*/i, '');
     let status = get('status').replace(/\s+/g, ' ').trim();
     status = status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Unknown';
+    if (/^adopted\s*\(testnet\)$/i.test(status)) status = 'Testnet';
     const purpose = [...new Set(get('purpose').split(/[,\s]+/).map((p) => PURPOSES[p.toUpperCase()]).filter(Boolean))];
     const layer = get('layer').split(/[,\s]+/).filter(Boolean).map((l) => l.charAt(0).toUpperCase() + l.slice(1)).join(', ') || '—';
     const complexity = parseInt(get('complexity'), 10) || null;

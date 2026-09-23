@@ -286,11 +286,12 @@
     </nav>
 
     <div class="guide-body">
-      <p class="guide-lede">How Rootstock Improvement Proposals work, from first idea to adoption. Summarised from <a href="https://github.com/rsksmart/RSKIPs/blob/master/IPs/RSKIP0.md" target="_blank" rel="noopener">RSKIP-0: Purpose and Guidelines</a>, which has the full text.</p>
+      <p class="guide-lede">How changes to Rootstock (RSK) are proposed, reviewed and adopted. Summarised from <a href="https://github.com/rsksmart/RSKIPs/blob/master/IPs/RSKIP0.md" target="_blank" rel="noopener">RSKIP-0: Purpose and Guidelines</a>, which has the full text.</p>
 
       <section id="g-what">
         <h2>What an RSKIP is</h2>
-        <p>RSKIP stands for RSK Improvement Proposal. It's a design document that describes a new feature for Rootstock, its processes or its environment. It should give a concise technical spec and the reasoning behind the feature. The author is responsible for building consensus in the community and recording dissenting opinions.</p>
+        <p>Rootstock is a Bitcoin sidechain that runs EVM-compatible smart contracts. It's merge-mined with Bitcoin, so the same miners secure both chains with the same proof-of-work, and it has been running since 2018. Gas is paid in rBTC, which is pegged 1:1 to BTC through the PowPeg bridge. Because it's EVM-compatible, Solidity and the usual Ethereum tooling work on it.</p>
+        <p>An RSKIP (Rootstock Improvement Proposal) is a design document that describes a change to Rootstock's protocol, its processes or its environment. It should give a concise technical spec and the reasoning behind the change. The author is responsible for building consensus in the community and recording dissenting opinions.</p>
         <p>RSKIPs are the main way to propose new features, collect community input on an issue and document the design decisions behind Rootstock. They live as text files in a versioned repo, so the revision history is the historical record of each proposal. For implementers, they're a simple way to track which proposals a client or library supports.</p>
       </section>
 
@@ -333,6 +334,7 @@
           <div><dt><span class="badge" data-tone="accepted">Accepted</span></dt><dd>Planned for immediate adoption, expected in the next reference client release.</dd></div>
           <div><dt><span class="badge">Active</span></dt><dd>Implemented and accepted by the community, where no hard or soft fork is needed.</dd></div>
           <div><dt><span class="badge" data-tone="adopted">Adopted</span></dt><dd>Adopted in a previous reference client release.</dd></div>
+          <div><dt><span class="badge" data-tone="testnet">Testnet</span></dt><dd>Adopted on Testnet. Listed in the RSKIP files as "Adopted (Testnet)".</dd></div>
           <div><dt><span class="badge">Deferred</span></dt><dd>Not being considered for immediate adoption. Set when no progress is being made. An editor can move it back to Draft later.</dd></div>
           <div><dt><span class="badge">Rejected</span></dt><dd>Turned down. It stays on record so the decision isn't lost.</dd></div>
           <div><dt><span class="badge">Withdrawn</span></dt><dd>Withdrawn by its authors. This is final: the number can't be reused, and picking the idea up later means a new proposal.</dd></div>
@@ -451,7 +453,6 @@
         <ul class="editors">
           <li><a href="https://github.com/sergioLerner" target="_blank" rel="noopener">Sergio Lerner</a></li>
           <li><a href="https://github.com/julianlen" target="_blank" rel="noopener">Julian Len</a></li>
-          <li><a href="https://github.com/diegomasini" target="_blank" rel="noopener">Diego Masini</a></li>
           <li><a href="https://github.com/smishraIOV" target="_blank" rel="noopener">Shreemoy Mishra</a></li>
           <li><a href="https://github.com/javicid" target="_blank" rel="noopener">Javier Alvarez Cid-Fuentes</a></li>
           <li><a href="https://github.com/raullaprida" target="_blank" rel="noopener">Raul Laprida</a></li>
@@ -475,9 +476,9 @@
 (() => {
   const REPO = 'rsksmart/RSKIPs', BRANCH = 'master';
   const RAW = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/`;
-  const STATUS_ORDER = ['Draft', 'Accepted', 'Adopted (Testnet)', 'Adopted', 'Deferred', 'Rejected', 'Withdrawn', 'Superseded', 'Unknown'];
+  const STATUS_ORDER = ['Draft', 'Accepted', 'Testnet', 'Adopted', 'Deferred', 'Rejected', 'Withdrawn', 'Superseded', 'Unknown'];
   const PURPOSE_NAME = { Sca: 'Scalability', Usa: 'Usability', Sec: 'Security', Fair: 'Fairness', ST: 'Standard Track' };
-  const TONE = { Draft: 'draft', Accepted: 'accepted', 'Adopted (Testnet)': 'testnet', Adopted: 'adopted' };
+  const TONE = { Draft: 'draft', Accepted: 'accepted', Testnet: 'testnet', Adopted: 'adopted' };
   const tone = (s) => TONE[s] || 'closed';
   const UPCOMING = ['Draft', 'Accepted'];
   const $ = (id) => document.getElementById(id);
@@ -603,7 +604,7 @@
     const presets = [
       { key: 'upcoming', label: 'Upcoming', set: UPCOMING, n: count((x) => UPCOMING.includes(x.status)) },
       { key: 'draft', label: 'Draft', set: ['Draft'], n: count((x) => x.status === 'Draft') },
-      { key: 'adopted', label: 'Adopted', set: ['Adopted', 'Adopted (Testnet)'], n: count((x) => x.status.startsWith('Adopted')) },
+      { key: 'adopted', label: 'Adopted', set: ['Adopted', 'Testnet'], n: count((x) => x.status === 'Adopted' || x.status === 'Testnet') },
       { key: 'all', label: 'All RSKIPs', set: STATUS_ORDER, n: items.length },
     ];
     const present = STATUS_ORDER.filter((s) => items.some((x) => x.status === s));
