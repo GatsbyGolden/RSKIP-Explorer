@@ -38,5 +38,3 @@ GitHub pauses scheduled workflows in public repos after 60 days without any comm
 ```sh
 python3 -m http.server 8000   # then open http://localhost:8000
 ```
-
-Unofficial; not maintained by the RSKIP editors.
