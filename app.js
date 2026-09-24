@@ -41,8 +41,8 @@ const tone = (s) => (Object.hasOwn(TONE, s) ? TONE[s] : 'closed');
 const rowId = (x) => `d-${x.path.replace(/[^A-Za-z0-9]/g, '-')}`;
 const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
 const sameSet = (a, b) => a.size === b.size && [...a].every((v) => b.has(v));
-const fmtDate = (d) => new Date(d).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
 const fmtDay = (d) => new Date(d).toLocaleDateString(undefined, { dateStyle: 'medium' });
+const fmtTime = (d) => new Date(d).toLocaleTimeString(undefined, { timeStyle: 'short' });
 
 let items = [];
 let snapshot = null;
@@ -137,15 +137,15 @@ async function init() {
     setSource('live', `Snapshot of ${repoLink} · ${esc(fmtDay(snapshot.generated))}`);
     return;
   }
-  if (snapshot) setSource('loading', 'Checking GitHub for changes…');
+  if (snapshot) setSource('loading', 'Checking GitHub…');
 
   try {
     const changed = await syncWithGitHub();
     if (changed) { buildOptions(); render(); }
-    setSource('live', `Up to date with ${repoLink} · checked ${esc(fmtDate(Date.now()))}`);
+    setSource('live', `Synced with ${repoLink} · ${esc(fmtTime(Date.now()))}`);
   } catch (e) {
     if (items.length) {
-      setSource('', `Showing the saved copy (last changed ${esc(fmtDay(snapshot.generated))}). Couldn't reach GitHub: ${esc(e.message)}.`);
+      setSource('', `Saved copy from ${esc(fmtDay(snapshot.generated))} · ${esc(e.message)}`);
     } else {
       setSource('', 'Could not load proposals.');
       $('rows').innerHTML = `<tr><td colspan="6" class="error">Couldn't reach GitHub. Try again in a minute.</td></tr>`;

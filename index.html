@@ -31,10 +31,13 @@
     <button class="theme-btn" id="themeBtn" type="button"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg><span id="themeLabel">Dark mode</span></button>
   </div>
   <div class="hero">
-    <div class="eyebrow">Rootstock <span aria-hidden="true">→</span> <mark>Improvement Proposals</mark></div>
+    <p class="eyebrow"><mark>Rootstock Improvement Proposals</mark></p>
     <h1>RSKIP <span>Explorer</span></h1>
-    <p>Every proposal to change Rootstock, in one place. See what's in draft, what's been accepted and what's already live. Got a view on one? Say it on <a href="https://github.com/rsksmart/RSKIPs" target="_blank" rel="noopener noreferrer">GitHub</a> or the <a href="https://research.rsk.dev/" target="_blank" rel="noopener noreferrer">Rootstock Research Forum</a>.</p>
-    <div class="source"><span class="dot loading" id="dot"></span><span id="sourceText" role="status">Loading proposals…</span></div>
+    <p class="lede">Every proposal to change Rootstock, in one place. See what's in draft, what's been accepted and what's already live. Got a view on one?</p>
+    <div class="ctas">
+      <a class="cta" href="https://github.com/rsksmart/RSKIPs" target="_blank" rel="noopener noreferrer">Comment on GitHub</a>
+      <a class="cta" href="https://research.rsk.dev/" target="_blank" rel="noopener noreferrer">Discuss on the Research Forum</a>
+    </div>
   </div>
 </header>
 
@@ -70,7 +73,7 @@
   </search>
   <div class="chips" id="statusChips" role="group" aria-label="Filter by status"></div>
 
-  <div class="meta-row"><span id="count" role="status" aria-live="polite"></span><span><button type="button" class="btn-link" id="expandAll">Expand all</button> <button type="button" class="btn-link" id="reset">Reset filters</button></span></div>
+  <div class="meta-row"><span class="meta-left"><span id="count" role="status" aria-live="polite"></span><span class="source"><span class="dot loading" id="dot"></span><span id="sourceText" role="status">Loading…</span></span></span><span><button type="button" class="btn-link" id="expandAll">Expand all</button> <button type="button" class="btn-link" id="reset">Reset filters</button></span></div>
 
   <div class="rows-wrap">
   <table class="list">

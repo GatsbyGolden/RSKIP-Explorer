@@ -35,20 +35,31 @@ a:hover { color: var(--orange); }
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 20px 64px; }
 
-.topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 36px; }
-.logo { height: 26px; width: auto; color: var(--orange); display: block; }
-.theme-btn { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--text); border: 1.5px solid var(--line-strong); border-radius: 999px; padding: 6px 14px; font: 13px var(--tag); text-transform: uppercase; letter-spacing: .04em; cursor: pointer; }
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 64px; }
+.logo { height: 32px; margin-left: -4px; /* brand minimum 32px; offsets the mark's built-in side bearing */ width: auto; color: var(--orange); display: block; }
+.theme-btn { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--text); border: 1.5px solid var(--line-strong); border-radius: 999px; height: 36px; padding: 0 16px; font: 13px var(--tag); text-transform: uppercase; letter-spacing: .04em; cursor: pointer; }
 .theme-btn:hover { background: var(--text); color: var(--bg); }
 .theme-btn svg { width: 14px; height: 14px; }
 
-header .eyebrow { font: 14px var(--body); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-header .eyebrow mark { background: var(--mark-bg); color: var(--mark-text); padding: 1px 6px; }
-header h1 { font: 400 clamp(40px, 7vw, 76px)/1 var(--display); letter-spacing: -.02em; margin: 14px 0 16px; text-wrap: balance; }
-header h1 span { background: var(--orange); color: #000; padding: 0 .1em; border-radius: .08em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
-header p { color: var(--muted); margin: 0; max-width: 64ch; }
-.source { margin-top: 16px; font: 13px var(--tag); text-transform: uppercase; letter-spacing: .04em; color: var(--muted); display: flex; align-items: flex-start; gap: 8px; }
-.source a { color: inherit; }
-.dot { margin-top: .35em; width: 9px; height: 9px; border-radius: 50%; background: var(--muted); flex: none; }
+/* Hero: one left edge, spacing on an 8px scale, type set to the brand's tracking and leading. */
+.hero { max-width: 760px; }
+.hero .eyebrow { margin: 0; font: 15px/1 var(--tag); text-transform: uppercase; letter-spacing: .04em; }
+.hero .eyebrow mark { display: inline-block; background: var(--mark-bg); color: var(--mark-text); padding: 5px 8px 4px; }
+/* Brand headline: leading 110%, tracking -25. margin-left pulls the R's side bearing onto the text edge. */
+.hero h1 { font: 400 clamp(44px, 7.2vw, 80px)/1.1 var(--display); letter-spacing: -.025em; word-spacing: -.12em; margin: 24px 0 0 -.075em; }
+/* Brand text box: box height 110% of type size, 10% inner spacing, square corners. */
+.hero h1 span { display: inline-block; background: var(--orange); color: #000; line-height: 1.1; padding: 0 .1em; margin-left: .02em; }
+/* Brand body copy is black or off-white, never grey. */
+.hero .lede { margin: 24px 0 0; font-size: 19px; line-height: 1.45; letter-spacing: -.01em; color: var(--text); max-width: 34em; text-wrap: pretty; }
+/* Brand CTA: pill outline plus an offset second stroke. Gap above equals CTA height (brand rule). */
+.ctas { display: flex; flex-wrap: wrap; gap: 12px 14px; margin-top: 28px; }
+.cta { display: inline-flex; align-items: center; height: 40px; padding: 0 18px; border: 1.5px solid var(--text); border-radius: 999px; color: var(--text); background: var(--bg); text-decoration: none; font: 15px var(--body); letter-spacing: -.01em; box-shadow: 3px 3px 0 -1.5px var(--bg), 3px 3px 0 0 var(--text); transition: transform .12s, box-shadow .12s; }
+.cta::after { content: "↗"; margin-left: 8px; font-size: .9em; }
+.cta:hover { color: var(--text); transform: translate(1.5px, 1.5px); box-shadow: 1.5px 1.5px 0 -1.5px var(--bg), 1.5px 1.5px 0 0 var(--text); }
+.meta-left { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; }
+.source { display: inline-flex; align-items: center; gap: 7px; }
+.source a { color: inherit; text-decoration-color: currentColor; text-decoration-thickness: 1px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex: none; }
 .dot.live { background: var(--green); }
 .dot.loading { background: var(--orange); animation: pulse 1s infinite alternate; }
 @keyframes pulse { to { opacity: .3; } }
@@ -80,7 +91,7 @@ select { cursor: pointer; }
 .btn-link { background: none; border: 0; color: var(--muted); font: 13px var(--tag); text-transform: uppercase; letter-spacing: .03em; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; padding: 4px; }
 .btn-link:hover { color: var(--text); }
 
-.meta-row { display: flex; justify-content: space-between; align-items: center; margin: 22px 2px 6px; font: 13px var(--tag); text-transform: uppercase; letter-spacing: .03em; color: var(--muted); gap: 10px; flex-wrap: wrap; }
+.meta-row { display: flex; justify-content: space-between; align-items: center; margin: 22px 0 6px; font: 13px var(--tag); text-transform: uppercase; letter-spacing: .03em; color: var(--muted); gap: 10px; flex-wrap: wrap; }
 
 table { width: 100%; border-collapse: collapse; }
 thead th { text-align: left; font: 13px var(--tag); text-transform: uppercase; letter-spacing: .04em; color: var(--muted); padding: 10px; border-bottom: 1.5px solid var(--line-strong); cursor: pointer; user-select: none; white-space: nowrap; }
@@ -112,7 +123,7 @@ footer { margin-top: 44px; padding-top: 18px; border-top: 1.5px solid var(--line
 footer p { margin: 0; max-width: 72ch; }
 
 [hidden] { display: none !important; }
-.tabs { display: flex; gap: 6px; margin: 28px 0 0; border-bottom: 1.5px solid var(--line-strong); flex-wrap: wrap; }
+.tabs { display: flex; gap: 6px; margin: 56px 0 0; border-bottom: 1.5px solid var(--line-strong); flex-wrap: wrap; }
 .tab { background: transparent; border: 0; border-radius: 10px 10px 0 0; padding: 10px 16px; font: 14px var(--tag); text-transform: uppercase; letter-spacing: .04em; color: var(--muted); cursor: pointer; }
 .tab:hover { color: var(--text); }
 .tab[aria-selected="true"] { background: var(--mark-bg); color: var(--mark-text); }
@@ -183,7 +194,14 @@ table.fields td { padding: 10px 0; border-bottom: 1px solid var(--line); font-si
 
 @media (max-width: 760px) {
   .wrap { padding: 20px 16px 48px; }
-  .topbar { margin-bottom: 26px; }
+  .topbar { margin-bottom: 40px; }
+  .logo { height: 28px; }
+  .theme-btn { height: 34px; padding: 0 12px; }
+  .hero h1 { margin-top: 18px; }
+  .hero .lede { margin-top: 18px; font-size: 17px; }
+  .ctas { margin-top: 22px; }
+  .cta { height: 38px; padding: 0 14px; font-size: 14px; }
+  .tabs { margin-top: 40px; }
   .stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .stat { padding: 12px; }
   .stat b { font-size: 30px; }
@@ -225,3 +243,4 @@ html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 .th-short { display: none; }
 @media (max-width: 1100px) { .th-long { display: none; } .th-short { display: inline; } }
+@media (prefers-reduced-motion: reduce) { .cta { transition: none; } }
