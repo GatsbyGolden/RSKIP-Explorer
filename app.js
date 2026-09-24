@@ -27,9 +27,9 @@ const filterOf = (status) => FILTER_ORDER.find((f) => FILTERS[f].includes(status
 const UPCOMING = ['Draft'];
 const TONE = { Draft: 'draft', Accepted: 'accepted', Active: 'adopted', Testnet: 'testnet', Adopted: 'adopted' };
 const PURPOSE_NAME = { Sca: 'Scalability', Usa: 'Usability', Sec: 'Security', Fair: 'Fairness', ST: 'Standard Track' };
-const SORT_KEYS = ['num', 'title', 'status', 'purpose', 'layer', 'complexity', 'created'];
+const SORT_KEYS = ['num', 'title', 'status', 'purpose', 'complexity', 'created'];
 const DESC_FIRST = ['created', 'complexity', 'num'];
-const DEFAULTS = { q: '', statuses: UPCOMING, layer: '', complexity: '', sort: 'created', dir: 'desc' };
+const DEFAULTS = { q: '', statuses: UPCOMING, purpose: '', complexity: '', sort: 'created', dir: 'desc' };
 
 const EMBEDDED = globalThis.__SNAP ?? null; // set only in the self-contained (offline) build
 const { parseRskip, parseAuthorIndex, isRskipFile } = globalThis.RSKIP;
@@ -148,7 +148,7 @@ async function init() {
       setSource('', `Showing the saved copy (last changed ${esc(fmtDay(snapshot.generated))}). Couldn't reach GitHub: ${esc(e.message)}.`);
     } else {
       setSource('', 'Could not load proposals.');
-      $('rows').innerHTML = `<tr><td colspan="7" class="error">Couldn't reach GitHub. Try again in a minute.</td></tr>`;
+      $('rows').innerHTML = `<tr><td colspan="6" class="error">Couldn't reach GitHub. Try again in a minute.</td></tr>`;
     }
   }
 }
@@ -162,7 +162,7 @@ function readUrl() {
   // Accepts filter names and exact statuses, so older links (e.g. status=Accepted) keep working.
   if (p.has('status')) state.statuses = new Set((p.get('status') || '').split(',').filter((s) => STATUS_ORDER.includes(s)).map(filterOf));
   if (p.has('q')) state.q = p.get('q').slice(0, 200);
-  if (p.has('layer')) state.layer = p.get('layer').slice(0, 40);
+  if (Object.hasOwn(PURPOSE_NAME, p.get('purpose') ?? '')) state.purpose = p.get('purpose');
   if (['1', '2', '3'].includes(p.get('complexity'))) state.complexity = p.get('complexity');
   const [k, d] = (p.get('sort') || '').split(':');
   if (SORT_KEYS.includes(k)) { state.sort = k; state.dir = d === 'asc' ? 'asc' : 'desc'; }
@@ -173,7 +173,7 @@ function writeUrl() {
   const p = new URLSearchParams();
   if (!sameSet(state.statuses, new Set(UPCOMING))) p.set('status', FILTER_ORDER.filter((f) => state.statuses.has(f)).join(','));
   if (state.q.trim()) p.set('q', state.q.trim());
-  for (const k of ['layer', 'complexity']) if (state[k]) p.set(k, state[k]);
+  for (const k of ['purpose', 'complexity']) if (state[k]) p.set(k, state[k]);
   if (`${state.sort}:${state.dir}` !== 'created:desc') p.set('sort', `${state.sort}:${state.dir}`);
   const qs = p.toString();
   try { history.replaceState(null, '', `${qs ? `?${qs}` : location.pathname}${location.hash}`); } catch { /* sandboxed */ }
@@ -185,7 +185,7 @@ function writeUrl() {
 
 function matches(x, ignoreStatus = false) {
   if (!ignoreStatus && !state.statuses.has(filterOf(x.status))) return false;
-  if (state.layer && !x.layer.split(', ').includes(state.layer)) return false;
+  if (state.purpose && !x.purpose.includes(state.purpose)) return false;
   if (state.complexity && String(x.complexity) !== state.complexity) return false;
   const q = state.q.trim().toLowerCase().replace(/^rskip[-\s]*/, '');
   if (/^\d+$/.test(q)) return x.num === Number(q); // "559" or "RSKIP-559" means that proposal
@@ -211,16 +211,16 @@ function compare(a, b) {
 // ---------------------------------------------------------------------------
 
 function buildOptions() {
-  const layers = [...new Set(items.flatMap((x) => x.layer.split(', ')))].filter((l) => l !== '—').sort();
-  if (!layers.includes(state.layer)) state.layer = ''; // ignore unknown values from old or edited links
-  $('layer').innerHTML = '<option value="">All categories</option>'
-    + layers.map((l) => `<option${l === state.layer ? ' selected' : ''}>${esc(l)}</option>`).join('');
+  const codes = Object.keys(PURPOSE_NAME).filter((p) => items.some((x) => x.purpose.includes(p)));
+  if (!codes.includes(state.purpose)) state.purpose = ''; // ignore unknown values from old or edited links
+  $('purpose').innerHTML = '<option value="">All purposes</option>'
+    + codes.map((p) => `<option value="${p}"${p === state.purpose ? ' selected' : ''}>${esc(PURPOSE_NAME[p])}</option>`).join('');
 }
 
 function syncControls({ search = false } = {}) {
   if (search) $('q').value = state.q; // never rewrite the box while someone is typing in it
   $('complexity').value = state.complexity;
-  $('layer').value = state.layer;
+  $('purpose').value = state.purpose;
   const sv = `${state.sort}:${state.dir}`;
   $('sortSel').value = [...$('sortSel').options].some((o) => o.value === sv) ? sv : 'custom';
 }
@@ -248,11 +248,10 @@ function renderRow(x) {
     <td class="title"><button type="button" class="row-toggle" data-path="${esc(x.path)}" data-focus-key="row-${esc(x.path)}" aria-expanded="${expanded}" aria-controls="${id}">${esc(x.title)}</button><span class="authors">${esc(x.authors.map((a) => a.name).join(', ') || 'Unknown author')}</span></td>
     <td class="status"><span class="badge" data-tone="${tone(x.status)}">${esc(x.status)}</span></td>
     <td class="purpose">${purposes}</td>
-    <td class="layer"><span class="tag">${esc(x.layer)}</span></td>
     <td class="cx">${cx}</td>
     <td class="date">${esc(x.created || '—')}</td>
   </tr>`;
-  const detail = `<tr class="detail" id="${id}"${expanded ? '' : ' hidden'}><td colspan="7"><p>${esc(x.abstract || 'No abstract found.')}</p><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">Read RSKIP-${esc(x.num)} on GitHub →</a></td></tr>`;
+  const detail = `<tr class="detail" id="${id}"${expanded ? '' : ' hidden'}><td colspan="6"><p>${esc(x.abstract || 'No abstract found.')}</p><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">Read RSKIP-${esc(x.num)} on GitHub →</a></td></tr>`;
   return row + detail;
 }
 
@@ -289,7 +288,7 @@ function render() {
   $('count').textContent = `${visible.length} of ${items.length} proposals`;
   $('rows').innerHTML = visible.length
     ? visible.map(renderRow).join('')
-    : '<tr><td colspan="7" class="empty">No proposals match these filters.</td></tr>';
+    : '<tr><td colspan="6" class="empty">No proposals match these filters.</td></tr>';
   paintExpandAll();
 
   if (focusKey) document.querySelector(`[data-focus-key="${CSS.escape(focusKey)}"]`)?.focus();
@@ -348,7 +347,7 @@ $('q').addEventListener('input', (e) => {
   clearTimeout(debounce);
   debounce = setTimeout(() => { state.q = e.target.value.slice(0, 200); update(); }, 150);
 });
-$('layer').addEventListener('change', (e) => { state.layer = e.target.value; update(); });
+$('purpose').addEventListener('change', (e) => { state.purpose = e.target.value; update(); });
 $('complexity').addEventListener('change', (e) => { state.complexity = e.target.value; update(); });
 $('sortSel').addEventListener('change', (e) => {
   const [k, d] = e.target.value.split(':');

@@ -154,7 +154,7 @@ footer p { margin: 0; max-width: 72ch; }
 .steps li { counter-increment: s; position: relative; padding-left: 46px; min-height: 30px; }
 .steps li::before { content: counter(s); position: absolute; left: 0; top: -3px; width: 30px; height: 30px; border-radius: 50%; background: var(--mark-bg); color: var(--mark-text); font: 14px/30px var(--tag); text-align: center; }
 .steps strong { font-family: var(--display); font-weight: 400; }
-.label-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.label-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .label-grid > div { background: var(--surface); border-radius: 14px; padding: 16px 18px; }
 .label-grid h3 { margin-top: 0; }
 .label-grid p { font-size: 14px; color: var(--muted); }
@@ -196,7 +196,7 @@ table.fields td { padding: 10px 0; border-bottom: 1px solid var(--line); font-si
   td.status { grid-row: 1; grid-column: 3; }
   td.title { grid-row: 2; grid-column: 1 / -1; }
   td.purpose { grid-row: 3; grid-column: 1 / -1; }
-  td.layer, td.cx { display: none; }
+  td.cx { display: none; }
   .controls select { flex: 1 1 45%; }
 }
 

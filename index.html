@@ -55,7 +55,7 @@
 
   <search class="controls">
     <div class="search"><label for="q" class="sr-only">Search proposals</label><input id="q" type="search" placeholder="Search number, title, author, abstract…" autocomplete="off" spellcheck="false" maxlength="200" aria-keyshortcuts="/"></div>
-    <select id="layer" aria-label="Category"><option value="">All categories</option></select>
+    <select id="purpose" aria-label="Purpose"><option value="">All purposes</option></select>
     <select id="complexity" aria-label="Complexity"><option value="">Any complexity</option><option value="1">1 · Minimal</option><option value="2">2 · Medium</option><option value="3">3 · High</option></select>
     <select id="sortSel" aria-label="Sort">
       <option value="custom" hidden>Sorted by column</option>
@@ -80,7 +80,6 @@
       <th scope="col" data-k="title"><button type="button" class="sort-btn">Title<span class="arr" aria-hidden="true"></span></button></th>
       <th scope="col" data-k="status"><button type="button" class="sort-btn">Status<span class="arr" aria-hidden="true"></span></button></th>
       <th scope="col" data-k="purpose"><button type="button" class="sort-btn">Purpose<span class="arr" aria-hidden="true"></span></button></th>
-      <th scope="col" data-k="layer"><button type="button" class="sort-btn">Layer<span class="arr" aria-hidden="true"></span></button></th>
       <th scope="col" data-k="complexity"><button type="button" class="sort-btn"><span class="th-long">Complexity</span><span class="th-short">Cx<span class="sr-only"> (complexity)</span></span><span class="arr" aria-hidden="true"></span></button></th>
       <th scope="col" data-k="created"><button type="button" class="sort-btn">Created<span class="arr" aria-hidden="true"></span></button></th>
     </tr></thead>
@@ -196,18 +195,6 @@
               <li><span class="tag">Sec</span> Security</li>
               <li><span class="tag">Fair</span> Fairness</li>
               <li><span class="tag">ST</span> Standard Track</li>
-            </ul>
-          </div>
-          <div>
-            <h3>Layer</h3>
-            <p>Which part of Rootstock it touches.</p>
-            <ul class="kv">
-              <li><span class="tag">Core</span> Consensus</li>
-              <li><span class="tag">Node</span> Node interfaces, such as RPC</li>
-              <li><span class="tag">Net</span> P2P networking</li>
-              <li><span class="tag">UI</span> User interface</li>
-              <li><span class="tag">2nd</span> Second-layer protocols</li>
-              <li><span class="tag">DApp</span> Dapp interfaces</li>
             </ul>
           </div>
           <div>
