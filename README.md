@@ -38,3 +38,10 @@ GitHub pauses scheduled workflows in public repos after 60 days without any comm
 ```sh
 python3 -m http.server 8000   # then open http://localhost:8000
 ```
+
+## Licence
+
+The site's code is [MIT](LICENSE). Two parts come from elsewhere and keep their own terms:
+
+- `fonts/`: Rootstock Sans from the [Rootstock brand system](https://github.com/rsksmart/rootstock-brand-system), MIT (see `fonts/LICENSE.md`).
+- `data.json` and the guide text: taken from [rsksmart/RSKIPs](https://github.com/rsksmart/RSKIPs). The proposals are published there under CC0 (public domain), as RSKIP-0 requires.
