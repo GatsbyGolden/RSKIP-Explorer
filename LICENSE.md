@@ -2,7 +2,7 @@ Rootstock Sans fonts are from https://github.com/rsksmart/rootstock-brand-system
 
 MIT License
 
-Copyright (c) 2024 Rootstock / IOV Labs
+Copyright (c) 2024 RootstockLabs
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
